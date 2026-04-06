@@ -1,9 +1,10 @@
-import { Activity, ArrowUpRight, Atom, CloudSun, GraduationCap, MapPin, MoveRight, RefreshCcw } from "lucide-react";
+import { Activity, ArrowUpRight, Atom, CloudSun, FileText, FolderKanban, GraduationCap, MapPin, MessageSquareMore, MoveRight, RefreshCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import { certifications, experiences, interests, profile } from "@shared/content";
-import type { EducationSnapshot, GitHubSnapshot, SemesterCourseNode, SkillState } from "@shared/types";
+import type { EducationSnapshot, GitHubSnapshot, PresenceSnapshot, SemesterCourseNode, SkillState } from "@shared/types";
 import { CourseworkGraph } from "@/components/CourseworkGraph";
 import { GitHubPulsePanel } from "@/components/GitHubPulsePanel";
+import { HeroPresenceCard } from "@/components/HeroPresenceCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SkillField } from "@/components/SkillField";
 import { formatTimeInZone } from "@/lib/format";
@@ -12,12 +13,13 @@ import { Link } from "react-router-dom";
 type HomePageProps = {
   education: EducationSnapshot;
   github: GitHubSnapshot;
+  presence: PresenceSnapshot;
   coursework: SemesterCourseNode[];
   skills: SkillState;
   onGrowSkill: (id: string) => void;
 };
 
-export function HomePage({ education, github, coursework, skills, onGrowSkill }: HomePageProps) {
+export function HomePage({ education, github, presence, coursework, skills, onGrowSkill }: HomePageProps) {
   const now = new Date();
   const timeLabel = formatTimeInZone(now, education.timezone);
   const graduationDate = new Date("2027-05-15T00:00:00-04:00");
@@ -27,23 +29,45 @@ export function HomePage({ education, github, coursework, skills, onGrowSkill }:
     <motion.div animate={{ opacity: 1, y: 0 }} className="page-shell" initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.55 }}>
       <section className="hero-grid">
         <motion.div className="hero-copy panel hero-panel" initial={{ opacity: 0, y: 24 }} transition={{ delay: 0.05 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <span className="eyebrow">Backend-first, interaction-aware</span>
-          <h1>{profile.name}</h1>
-          <p className="hero-summary">{profile.heroSummary}</p>
-          <p className="hero-detail">{profile.heroDetail}</p>
+          <div className="hero-copy-main">
+            <span className="eyebrow">Backend-first, interaction-aware</span>
+            <h1>{profile.name}</h1>
+            <p className="hero-summary">{profile.heroSummary}</p>
+            <p className="hero-detail">{profile.heroDetail}</p>
+          </div>
 
-          <div className="hero-actions">
-            <a className="primary-button" href={profile.linkedinUrl} rel="noreferrer" target="_blank">
-              LinkedIn
-              <ArrowUpRight size={16} />
-            </a>
-            <a className="secondary-button" href={profile.githubUrl} rel="noreferrer" target="_blank">
-              GitHub
-            </a>
-            <Link className="tertiary-link" to="/create">
-              Launch custom games
-              <MoveRight size={16} />
-            </Link>
+          <div className="hero-utility-stack">
+            <HeroPresenceCard presence={presence} />
+
+            <div className="hero-actions">
+              <Link className="primary-button" to="/resume">
+                Resume
+                <FileText size={16} />
+              </Link>
+              <Link className="secondary-button" to="/projects">
+                Projects
+                <FolderKanban size={16} />
+              </Link>
+              <Link className="secondary-button" to="/message-me">
+                Message Me
+                <MessageSquareMore size={16} />
+              </Link>
+            </div>
+
+            <div className="hero-links-row">
+              <a className="tertiary-link" href={profile.linkedinUrl} rel="noreferrer" target="_blank">
+                LinkedIn
+                <ArrowUpRight size={16} />
+              </a>
+              <a className="tertiary-link" href={profile.githubUrl} rel="noreferrer" target="_blank">
+                GitHub
+                <ArrowUpRight size={16} />
+              </a>
+              <Link className="hero-feature-link" to="/create">
+                <span>Custom Games</span>
+                <MoveRight size={16} />
+              </Link>
+            </div>
           </div>
         </motion.div>
 

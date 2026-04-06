@@ -2,15 +2,16 @@ import { AnimatePresence } from "framer-motion";
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { FloatingNav } from "@/components/FloatingNav";
-import { fetchBootstrap, fetchSkillState, growSkill } from "@/lib/api";
+import { fetchBootstrap, fetchPresence, fetchSkillState, growSkill } from "@/lib/api";
 import { CreatePage } from "@/pages/CreatePage";
 import { HomePage } from "@/pages/HomePage";
+import { MessageMePage } from "@/pages/MessageMePage";
 import { ProjectsPage } from "@/pages/ProjectsPage";
 import { ResumePage } from "@/pages/ResumePage";
 import { WordlePage } from "@/pages/WordlePage";
 import { ConnectionsPage } from "@/pages/ConnectionsPage";
 import { courseworkTimeline, initialSkills, mockTracks } from "@shared/content";
-import type { BootstrapPayload, EducationSnapshot, GitHubSnapshot, MusicTrack, SkillState } from "@shared/types";
+import type { BootstrapPayload, EducationSnapshot, GitHubSnapshot, MusicTrack, PresenceSnapshot, SkillState } from "@shared/types";
 
 const fallbackEducation: EducationSnapshot = {
   school: "Purdue University",
@@ -60,10 +61,21 @@ const fallbackGithub: GitHubSnapshot = {
   fetchedAt: new Date().toISOString(),
 };
 
+const fallbackPresence: PresenceSnapshot = {
+  status: "coding_away",
+  label: "Coding away",
+  note: "At the desk building, debugging, or polishing some backend-heavy system.",
+  currentTimeLabel: "Now",
+  nextChangeLabel: "Backend schedule warming up",
+  timezone: "America/Indiana/Indianapolis",
+  updatedAt: new Date().toISOString(),
+};
+
 function App() {
   const location = useLocation();
   const [education, setEducation] = useState<EducationSnapshot>(fallbackEducation);
   const [github, setGithub] = useState<GitHubSnapshot>(fallbackGithub);
+  const [presence, setPresence] = useState<PresenceSnapshot>(fallbackPresence);
   const [skills, setSkills] = useState<SkillState>({
     bubbles: initialSkills,
     updatedAt: new Date().toISOString(),
@@ -79,6 +91,7 @@ function App() {
         startTransition(() => {
           setEducation(payload.education);
           setGithub(payload.github);
+          setPresence(payload.presence);
           setSkills(payload.skills);
           const matched = mockTracks.find((track) => track.id === payload.currentTrack.id) ?? payload.currentTrack;
           setCurrentTrack(matched);
@@ -89,6 +102,20 @@ function App() {
           .then((payload) => setSkills(payload))
           .catch(() => undefined);
       });
+  }, []);
+
+  useEffect(() => {
+    const refreshPresence = () => {
+      fetchPresence()
+        .then((payload) => {
+          startTransition(() => setPresence(payload.current));
+        })
+        .catch(() => undefined);
+    };
+
+    refreshPresence();
+    const interval = window.setInterval(refreshPresence, 60_000);
+    return () => window.clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -194,10 +221,20 @@ function App() {
         <AnimatePresence mode="wait">
           <Routes key={location.pathname} location={location}>
             <Route
-              element={<HomePage coursework={coursework} education={education} github={github} onGrowSkill={handleGrowSkill} skills={skills} />}
+              element={
+                <HomePage
+                  coursework={coursework}
+                  education={education}
+                  github={github}
+                  onGrowSkill={handleGrowSkill}
+                  presence={presence}
+                  skills={skills}
+                />
+              }
               path="/"
             />
             <Route element={<CreatePage />} path="/create" />
+            <Route element={<MessageMePage />} path="/message-me" />
             <Route element={<ResumePage />} path="/resume" />
             <Route element={<ProjectsPage />} path="/projects" />
             <Route element={<WordlePage />} path="/play/wordle/:id" />

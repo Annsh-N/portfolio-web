@@ -76,6 +76,32 @@ export type GitHubSnapshot = {
   fetchedAt: string;
 };
 
+export type PresenceStatus = "sleeping" | "in_class" | "coding_away" | "gym";
+
+export type PresenceSnapshot = {
+  status: PresenceStatus;
+  label: string;
+  note: string;
+  currentTimeLabel: string;
+  nextChangeLabel: string;
+  timezone: string;
+  updatedAt: string;
+};
+
+export type PresenceScheduleEntry = {
+  weekday: string;
+  start: string;
+  end: string;
+  status: PresenceStatus;
+  label: string;
+  note: string;
+};
+
+export type PresencePayload = {
+  current: PresenceSnapshot;
+  schedule: PresenceScheduleEntry[];
+};
+
 export type SemesterCourseNode = {
   id: string;
   label: string;
@@ -157,6 +183,7 @@ export type SkillGrowthPayload = {
 export type BootstrapPayload = {
   education: EducationSnapshot;
   github: GitHubSnapshot;
+  presence: PresenceSnapshot;
   currentTrack: MusicTrack;
   coursework: SemesterCourseNode[];
   skills: SkillState;

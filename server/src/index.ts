@@ -6,6 +6,7 @@ import { getEducationSnapshot } from "./services/education.js";
 import { createConnectionsGame, createWordleGame, isExpired, summarizeGame } from "./services/games.js";
 import { getGitHubSnapshot } from "./services/github.js";
 import { getCurrentTrack } from "./services/music.js";
+import { getPresencePayload, getPresenceSnapshot } from "./services/presence.js";
 import { growSkill, skillsEvents } from "./services/skills.js";
 import { readStore } from "./store.js";
 import { connectionsSchema, wordleSchema } from "./validation.js";
@@ -18,15 +19,17 @@ const clientDist = path.join(workspaceRoot, "client", "dist");
 app.use(express.json());
 
 app.get("/api/bootstrap", async (_req, res) => {
-  const [education, github, track, store] = await Promise.all([
+  const [education, github, presence, track, store] = await Promise.all([
     getEducationSnapshot(),
     getGitHubSnapshot(),
+    Promise.resolve(getPresenceSnapshot()),
     Promise.resolve(getCurrentTrack()),
     readStore(),
   ]);
   res.json({
     education,
     github,
+    presence,
     currentTrack: track,
     coursework: courseworkTimeline,
     skills: store.skills,
@@ -45,6 +48,10 @@ app.get("/api/github", async (_req, res) => {
 
 app.get("/api/music/current", (_req, res) => {
   res.json(getCurrentTrack());
+});
+
+app.get("/api/presence", (_req, res) => {
+  res.json(getPresencePayload());
 });
 
 app.get("/api/skills", async (_req, res) => {

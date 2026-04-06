@@ -3,6 +3,7 @@ import type {
   ConnectionsGroup,
   GameConfig,
   GameCreateResult,
+  PresencePayload,
   SkillState,
 } from "@shared/types";
 
@@ -25,6 +26,10 @@ async function request<T>(input: string, init?: RequestInit): Promise<T> {
 
 export function fetchBootstrap(): Promise<BootstrapPayload> {
   return request<BootstrapPayload>("/api/bootstrap");
+}
+
+export function fetchPresence(): Promise<PresencePayload> {
+  return request<PresencePayload>("/api/presence");
 }
 
 export function fetchSkillState(): Promise<SkillState> {
