@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 import { writeStore } from "../store.js";
 import type { SkillState } from "../../../shared/types.js";
 
-const MAX_RATIO = 1.85;
+const MAX_RATIO = 5;
 export const skillsEvents = new EventEmitter();
 
 export async function growSkill(id: string): Promise<SkillState> {
@@ -13,7 +13,7 @@ export async function growSkill(id: string): Promise<SkillState> {
       if (bubble.id !== id) {
         return bubble;
       }
-      const growthStep = Math.max(0.02, bubble.baseSize * 0.035);
+      const growthStep = Math.max(0.12, bubble.baseSize * 0.11);
       return {
         ...bubble,
         size: Math.min(threshold, Number((bubble.size + growthStep).toFixed(3))),

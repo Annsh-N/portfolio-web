@@ -185,30 +185,13 @@ export function HomePage({ education, github, coursework, skills, onGrowSkill }:
 
       <section className="page-section" id="skills">
         <SectionHeading
-          description="A shared live field where skill weights respond to hover and update across visitors."
+          description="Click on a Skill to endorse it (make it bigger) for others to see."
           title="Skills"
         />
 
-        <div className="skills-grid">
-          <article className="panel skill-callout">
-            <span className="eyebrow">Realtime interaction</span>
-            <h3>Collective signal</h3>
-            <p>
-              This field is backed by persisted shared state. Growth events update the bubble sizes for every
-              connected visitor, which makes the portfolio feel less like a brochure and more like a running
-              system.
-            </p>
-            <div className="skill-meta-list">
-              <span>Persisted on the server</span>
-              <span>SSE broadcast channel</span>
-              <span>Ratio-capped growth behavior</span>
-            </div>
-          </article>
-
-          <article className="panel skill-field-panel">
-            <SkillField onGrow={onGrowSkill} state={skills} />
-          </article>
-        </div>
+        <article className="panel skill-field-panel">
+          <SkillField onGrow={onGrowSkill} state={skills} />
+        </article>
       </section>
 
       <section className="page-section">

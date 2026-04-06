@@ -86,9 +86,12 @@ export type SemesterCourseNode = {
   dependsOn: string[];
 };
 
+export type SkillCategory = "backend" | "frontend" | "data" | "infra" | "systems";
+
 export type SkillBubble = {
   id: string;
   label: string;
+  category: SkillCategory;
   size: number;
   baseSize: number;
   weight: number;

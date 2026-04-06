@@ -254,28 +254,66 @@ export const courseworkTimeline: SemesterCourseNode[] = [
   },
 ];
 
-export const initialSkills: SkillBubble[] = [
-  { id: "java", label: "Java", size: 1.14, baseSize: 1.14, weight: 1.08, hue: 26 },
-  { id: "spring", label: "Spring Boot", size: 1.11, baseSize: 1.11, weight: 1.05, hue: 92 },
-  { id: "typescript", label: "TypeScript", size: 1.09, baseSize: 1.09, weight: 1.04, hue: 204 },
-  { id: "react", label: "React", size: 1.04, baseSize: 1.04, weight: 1.01, hue: 190 },
-  { id: "node", label: "Node.js", size: 1.03, baseSize: 1.03, weight: 1.0, hue: 132 },
-  { id: "express", label: "Express", size: 0.98, baseSize: 0.98, weight: 0.97, hue: 214 },
-  { id: "python", label: "Python", size: 1.08, baseSize: 1.08, weight: 1.03, hue: 54 },
-  { id: "sql", label: "SQL", size: 0.96, baseSize: 0.96, weight: 0.94, hue: 14 },
-  { id: "angular", label: "Angular", size: 0.94, baseSize: 0.94, weight: 0.93, hue: 354 },
-  { id: "docker", label: "Docker", size: 0.95, baseSize: 0.95, weight: 0.95, hue: 205 },
-  { id: "oauth", label: "OAuth2", size: 0.89, baseSize: 0.89, weight: 0.88, hue: 280 },
-  { id: "systems", label: "Systems Design", size: 1.05, baseSize: 1.05, weight: 1.02, hue: 238 },
-  { id: "observability", label: "Observability", size: 0.92, baseSize: 0.92, weight: 0.9, hue: 160 },
-  { id: "ml", label: "Machine Learning", size: 0.98, baseSize: 0.98, weight: 0.96, hue: 42 },
-  { id: "cloudflare", label: "Cloudflare", size: 0.87, baseSize: 0.87, weight: 0.87, hue: 22 },
-  { id: "ci", label: "CI/CD", size: 0.91, baseSize: 0.91, weight: 0.9, hue: 124 },
-  { id: "postgres", label: "PostgreSQL", size: 0.9, baseSize: 0.9, weight: 0.89, hue: 226 },
-  { id: "llm", label: "LLM Products", size: 0.93, baseSize: 0.93, weight: 0.92, hue: 306 },
-  { id: "api", label: "API Design", size: 0.96, baseSize: 0.96, weight: 0.94, hue: 186 },
-  { id: "testing", label: "Regression Testing", size: 0.88, baseSize: 0.88, weight: 0.86, hue: 12 },
+const SKILL_SIZE_MIN = 0.92;
+const SKILL_SIZE_MAX = 4.45;
+
+const skillSeeds: Array<Pick<SkillBubble, "id" | "label" | "category" | "hue">> = [
+  { id: "java", label: "Java", category: "backend", hue: 24 },
+  { id: "spring", label: "Spring Boot", category: "backend", hue: 24 },
+  { id: "typescript", label: "TypeScript", category: "frontend", hue: 204 },
+  { id: "react", label: "React", category: "frontend", hue: 204 },
+  { id: "node", label: "Node.js", category: "backend", hue: 24 },
+  { id: "express", label: "Express", category: "backend", hue: 24 },
+  { id: "python", label: "Python", category: "data", hue: 54 },
+  { id: "sql", label: "SQL", category: "data", hue: 54 },
+  { id: "angular", label: "Angular", category: "frontend", hue: 204 },
+  { id: "docker", label: "Docker", category: "infra", hue: 152 },
+  { id: "oauth", label: "OAuth2", category: "systems", hue: 330 },
+  { id: "systems", label: "Systems Design", category: "systems", hue: 330 },
+  { id: "observability", label: "Observability", category: "infra", hue: 152 },
+  { id: "ml", label: "Machine Learning", category: "data", hue: 54 },
+  { id: "cloudflare", label: "Cloudflare", category: "infra", hue: 152 },
+  { id: "ci", label: "CI/CD", category: "infra", hue: 152 },
+  { id: "postgres", label: "PostgreSQL", category: "backend", hue: 24 },
+  { id: "llm", label: "LLM Products", category: "data", hue: 54 },
+  { id: "api", label: "API Design", category: "backend", hue: 24 },
+  { id: "testing", label: "Regression Testing", category: "systems", hue: 330 },
+  { id: "redis", label: "Redis", category: "backend", hue: 24 },
+  { id: "graphql", label: "GraphQL", category: "frontend", hue: 204 },
+  { id: "numpy", label: "NumPy", category: "data", hue: 54 },
+  { id: "aws", label: "AWS", category: "infra", hue: 152 },
+  { id: "linux", label: "Linux", category: "systems", hue: 330 },
+  { id: "cpp", label: "C++", category: "systems", hue: 330 },
 ];
+
+function hashSkillId(id: string): number {
+  let hash = 0;
+  for (const char of id) {
+    hash = (hash * 33 + char.charCodeAt(0)) % 1_000_003;
+  }
+  return hash;
+}
+
+function getSeededSkillSize(id: string): number {
+  const normalized = (hashSkillId(id) % 1000) / 999;
+  return Number((SKILL_SIZE_MIN + normalized * (SKILL_SIZE_MAX - SKILL_SIZE_MIN)).toFixed(3));
+}
+
+function getSkillWeight(size: number): number {
+  const normalized = (size - SKILL_SIZE_MIN) / (SKILL_SIZE_MAX - SKILL_SIZE_MIN);
+  return Number((0.9 + normalized * 0.8).toFixed(3));
+}
+
+export const initialSkills: SkillBubble[] = skillSeeds.map((seed) => {
+  const size = getSeededSkillSize(seed.id);
+
+  return {
+    ...seed,
+    size,
+    baseSize: size,
+    weight: getSkillWeight(size),
+  };
+});
 
 export const mockTracks: MusicTrack[] = [
   {

@@ -1094,44 +1094,64 @@ button {
   background: rgba(244, 114, 182, 0.12);
 }
 
-.skill-callout {
-  display: grid;
-  align-content: start;
-  gap: 1rem;
-}
-
-.skill-callout p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
 .skill-field {
   position: relative;
-  min-height: 460px;
+  width: 100%;
   overflow: hidden;
   border-radius: 1.3rem;
   background:
-    radial-gradient(circle at 50% 50%, rgba(125, 211, 252, 0.08), transparent 45%),
-    rgba(255, 255, 255, 0.03);
+    radial-gradient(circle at 18% 20%, rgba(59, 130, 246, 0.12), transparent 28%),
+    radial-gradient(circle at 82% 14%, rgba(14, 165, 233, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(6, 18, 38, 0.96), rgba(2, 9, 22, 0.98));
+  border: 1px solid rgba(96, 165, 250, 0.14);
+  box-shadow: inset 0 1px 0 rgba(191, 219, 254, 0.04);
 }
 
 .skill-bubble {
   position: absolute;
-  top: 0;
-  left: 0;
-  min-width: 108px;
-  padding: 0.9rem 1.05rem;
-  color: var(--text);
-  border: 1px solid hsla(var(--bubble-hue), 90%, 78%, 0.24);
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 30% 30%, hsla(var(--bubble-hue), 92%, 72%, 0.26), transparent 52%),
-    rgba(6, 13, 25, 0.76);
-  box-shadow: 0 20px 45px rgba(3, 10, 18, 0.35);
-  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: inline-flex;
+  padding: 0.8rem;
+  color: var(--bubble-text);
+  border: 1px solid var(--bubble-edge);
+  border-radius: 50%;
+  background: transparent;
   transform: translate(-50%, -50%);
-  white-space: nowrap;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 16px 30px rgba(1, 8, 20, 0.22);
+  cursor: pointer;
+  text-align: center;
+  transform-origin: center;
+  transition: box-shadow 160ms ease, border-color 160ms ease;
+  will-change: left, top, width, height;
+}
+
+.skill-bubble:hover {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 18px 34px rgba(1, 8, 20, 0.3);
+}
+
+.skill-bubble span {
+  width: calc(var(--bubble-label-width) * 100%);
+  max-width: 100%;
+  display: block;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: var(--bubble-font-size);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-wrap: balance;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.skill-field-panel {
+  padding: 1.1rem;
 }
 
 .signal-list {
@@ -1465,7 +1485,6 @@ button {
   .location-panel,
   .graph-panel,
   .experience-card,
-  .skill-callout,
   .skill-field-panel,
   .create-card,
   .connections-shell,
