@@ -1,4 +1,4 @@
-import { FolderGit2, GitCommitHorizontal, Sparkles, Star } from "lucide-react";
+import { Clock3, Code2, FolderGit2, GitCommitHorizontal, Sparkles, Star } from "lucide-react";
 import type { GitHubSnapshot } from "@shared/types";
 
 type GitHubPulsePanelProps = {
@@ -20,7 +20,14 @@ function formatRelativeDate(iso: string) {
   }
 
   const diffMinutes = Math.round(diffMs / 60_000);
-  return formatter.format(diffMinutes, "minute");
+  if (diffMinutes < 0) {
+    const mins = Math.abs(diffMinutes);
+    return `${mins} min${mins === 1 ? "" : "s"} ago`;
+  }
+  if (diffMinutes > 0) {
+    return `in ${diffMinutes} min${diffMinutes === 1 ? "" : "s"}`;
+  }
+  return "just now";
 }
 
 function getCommitLevel(count: number, peak: number) {
@@ -72,10 +79,18 @@ export function GitHubPulsePanel({ snapshot }: GitHubPulsePanelProps) {
             <FolderGit2 size={12} />
             <span>Last worked on</span>
           </div>
-          <strong>{snapshot.lastRepo?.fullName ?? "No recent repository"}</strong>
-          <div className="github-card-meta">
-            <span>{snapshot.lastRepo?.language ?? "Private / mixed"}</span>
-            <span>{snapshot.lastRepo ? `Updated ${formatRelativeDate(snapshot.lastRepo.pushedAt)}` : "Awaiting data"}</span>
+          <strong title={snapshot.lastRepo?.fullName ?? "No recent repository"}>
+            {snapshot.lastRepo?.fullName ?? "No recent repository"}
+          </strong>
+          <div className="github-card-meta github-card-meta-stack">
+            <span>
+              <Code2 size={13} />
+              {snapshot.lastRepo?.language ?? "Private / mixed"}
+            </span>
+            <span>
+              <Clock3 size={13} />
+              {snapshot.lastRepo ? `${formatRelativeDate(snapshot.lastRepo.pushedAt)}` : "Awaiting data"}
+            </span>
           </div>
         </a>
 
@@ -84,7 +99,9 @@ export function GitHubPulsePanel({ snapshot }: GitHubPulsePanelProps) {
             <Sparkles size={12} />
             <span>Repo of the week</span>
           </div>
-          <strong>{snapshot.featuredRepo?.fullName ?? "Featured repository"}</strong>
+          <strong title={snapshot.featuredRepo?.fullName ?? "Featured repository"}>
+            {snapshot.featuredRepo?.fullName ?? "Featured repository"}
+          </strong>
           <div className="github-card-meta github-card-meta-stack">
             <span>
               <GitCommitHorizontal size={13} />

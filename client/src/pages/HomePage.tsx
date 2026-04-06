@@ -32,12 +32,6 @@ export function HomePage({ education, github, coursework, skills, onGrowSkill }:
           <p className="hero-summary">{profile.heroSummary}</p>
           <p className="hero-detail">{profile.heroDetail}</p>
 
-          <div className="hero-badges">
-            <span>{profile.degree}</span>
-            <span>{profile.gpa} GPA</span>
-            <span>{profile.location}</span>
-          </div>
-
           <div className="hero-actions">
             <a className="primary-button" href={profile.linkedinUrl} rel="noreferrer" target="_blank">
               LinkedIn
