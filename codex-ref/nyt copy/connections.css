@@ -1,0 +1,129 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px;
+}
+
+#category-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+}
+
+#words-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    width: 95%;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+}
+
+.word {
+    height: 60px;
+    width: 140px;
+    padding: 20px;
+    margin: 5px;
+    background-color: rgb(226, 226, 216);
+    border-radius: 10px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium';
+    font-size: 25px;
+    font-weight: 1000;
+    transition: background-color 0.2s, transform 0.5s ease;
+
+}
+
+.word.selected {
+    background-color: rgb(90, 89, 78);
+    color: white;
+    transform: scale(1.02);
+}
+
+.category {
+    height: 60px;
+    width: 740px;
+    border-radius: 10px;
+    background-color: lightgray; /* Optional: to visually distinguish it */
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium';
+    transform: 0.5s ease;
+}
+
+.category-name {
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+button {
+    height: 60px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: black 2px solid;
+    background-color: transparent;
+    color: black;
+    font-family: 'Franklin Gothic Medium';
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#mistakes-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Franklin Gothic Medium';
+    font-size: 20px;
+}
+
+#mistakes{
+    color: rgb(90, 89, 78);
+    font-size: 50px;
+    display: inline;
+    align-items: end;
+}
+
+.shake {
+    position: relative; /* Allows the element to move relative to its original position */
+    animation: shake 0.5s; /* The animation lasts for 0.5 seconds */
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite; /* The animation repeats indefinitely */
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); } /* Start and end at the original position */
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } /* Move left */
+    20%, 40%, 60%, 80% { transform: translateX(10px); } /* Move right */
+  }

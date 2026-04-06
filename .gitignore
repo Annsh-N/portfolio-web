@@ -1,0 +1,7 @@
+node_modules
+.DS_Store
+.venv
+dist
+client/dist
+server/dist
+server/data/store.json
