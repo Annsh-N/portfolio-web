@@ -4,6 +4,7 @@ import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createWordle } from "@/lib/api";
 import { formatDate } from "@/lib/format";
+import { wordleDictionarySet } from "@shared/wordleDictionary";
 
 const keyboardRows = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -15,6 +16,8 @@ type CreateResultState = {
   path: string;
   expiresAt: string;
 };
+
+const defaultWord = "ANNSH";
 
 export function CreateWordlePage() {
   const [word, setWord] = useState("");
@@ -28,7 +31,8 @@ export function CreateWordlePage() {
     [result],
   );
 
-  const displayWord = word.padEnd(5).slice(0, 5).split("");
+  const activeWord = (word.trim() || defaultWord).slice(0, 5).toUpperCase();
+  const displayWord = activeWord.split("");
 
   function pushLetter(letter: string) {
     setWord((current) => (current.length >= 5 ? current : `${current}${letter}`));
@@ -65,14 +69,21 @@ export function CreateWordlePage() {
 
     setError(null);
 
-    if (word.trim().length !== 5) {
+    const nextWord = word.trim() || defaultWord;
+
+    if (nextWord.length !== 5) {
       setError("Word must be five letters.");
+      return;
+    }
+
+    if (!wordleDictionarySet.has(nextWord.toUpperCase())) {
+      setError("Use a real five-letter word.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await createWordle(word.trim());
+      const response = await createWordle(nextWord);
       setResult({ path: response.game.path, expiresAt: response.game.expiresAt });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not generate Wordle.");
@@ -129,7 +140,7 @@ export function CreateWordlePage() {
         <div className="wordle-nyt-board-container">
           <div className="wordle-nyt-board wordle-maker-board">
             {displayWord.map((letter, index) => (
-              <div className={`wordle-nyt-tile ${letter ? "is-filled" : ""}`} key={index}>
+              <div className={`wordle-nyt-tile ${letter ? "is-filled" : ""} ${!word.trim() ? "is-default" : ""}`} key={index}>
                 {letter}
               </div>
             ))}

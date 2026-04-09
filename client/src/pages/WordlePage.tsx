@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { WordleGameConfig } from "@shared/types";
+import { wordleDictionarySet } from "@shared/wordleDictionary";
 import { fetchGame } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 
@@ -45,9 +46,11 @@ export function WordlePage() {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [statuses, setStatuses] = useState<TileState[][]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [showResultModal, setShowResultModal] = useState(false);
 
   const isSolved = !!config && guesses.includes(config.answer);
   const isComplete = isSolved || guesses.length >= 6;
+  const endState = isSolved ? "win" : guesses.length >= 6 ? "loss" : null;
 
   useEffect(() => {
     fetchGame("wordle", id)
@@ -88,6 +91,10 @@ export function WordlePage() {
       return;
     }
     const guess = currentGuess.toUpperCase();
+    if (!wordleDictionarySet.has(guess)) {
+      setMessage("That word is not in the dictionary.");
+      return;
+    }
     const nextStatus = evaluateGuess(config.answer, guess);
     setGuesses((value) => [...value, guess]);
     setStatuses((value) => [...value, nextStatus]);
@@ -132,6 +139,12 @@ export function WordlePage() {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
+
+  useEffect(() => {
+    if (endState) {
+      setShowResultModal(true);
+    }
+  }, [endState]);
 
   const keyStates = useMemo(() => {
     const priority: Record<KeyState, number> = {
@@ -240,6 +253,28 @@ export function WordlePage() {
             </div>
           ))}
         </div>
+
+        {showResultModal && endState ? (
+          <div className="wordle-result-modal-backdrop">
+            <div className="wordle-result-modal">
+              <span className="eyebrow">{endState === "win" ? "You got it" : "Out of turns"}</span>
+              <h2>{endState === "win" ? "Nice solve." : "Good try."}</h2>
+              <p>
+                {endState === "win"
+                  ? `You cracked ${config.answer} in ${guesses.length} ${guesses.length === 1 ? "guess" : "guesses"}.`
+                  : `The answer was ${config.answer}.`}
+              </p>
+              <div className="wordle-result-actions">
+                <Link className="wordle-result-link" to="/create/wordle">
+                  Make your own
+                </Link>
+                <button className="wordle-result-dismiss" onClick={() => setShowResultModal(false)} type="button">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </motion.div>
   );

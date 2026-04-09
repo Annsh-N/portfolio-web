@@ -32,6 +32,9 @@ export function ConnectionsPage() {
   const [message, setMessage] = useState("Create four groups of four.");
   const [error, setError] = useState<string | null>(null);
   const [shakingWords, setShakingWords] = useState<string[]>([]);
+  const [showResultModal, setShowResultModal] = useState(false);
+
+  const endState = solved.length === 4 ? "win" : mistakes === 0 ? "loss" : null;
 
   useEffect(() => {
     fetchGame("connections", id)
@@ -42,6 +45,12 @@ export function ConnectionsPage() {
       })
       .catch((caught) => setError(caught instanceof Error ? caught.message : "Unable to load this game."));
   }, [id]);
+
+  useEffect(() => {
+    if (endState) {
+      setShowResultModal(true);
+    }
+  }, [endState]);
 
   const remaining = useMemo(() => pool.filter((word) => !solved.some((group) => group.words.includes(word))), [pool, solved]);
 
@@ -164,6 +173,32 @@ export function ConnectionsPage() {
             Mistakes remaining: <span>{"•".repeat(mistakes)}</span>
           </div>
         </div>
+
+        {showResultModal && endState ? (
+          <div className="connections-result-modal-backdrop">
+            <div className="connections-result-modal">
+              <span className="eyebrow">{endState === "win" ? "Board cleared" : "Out of mistakes"}</span>
+              <h2>{endState === "win" ? "Nice solve." : "Close, but not quite."}</h2>
+              <p>
+                {endState === "win"
+                  ? "You found all four categories."
+                  : "The board locked before all four groups were found."}
+              </p>
+              <div className="connections-result-actions">
+                <Link className="connections-result-link" to="/create/connections">
+                  Make your own
+                </Link>
+                <button
+                  className="connections-result-dismiss"
+                  onClick={() => setShowResultModal(false)}
+                  type="button"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </motion.div>
   );

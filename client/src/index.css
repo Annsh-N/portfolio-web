@@ -2094,6 +2094,10 @@ button {
   border-color: #565758;
 }
 
+.wordle-nyt-tile.is-default {
+  color: #6a6c70;
+}
+
 .wordle-nyt-keyboard {
   height: 200px;
   padding: 0 8px 14px;
@@ -2219,6 +2223,61 @@ button {
 
 .wordle-nyt-key.is-maker-action {
   background: #538d4e;
+}
+
+.wordle-result-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.wordle-result-modal {
+  width: min(320px, calc(100vw - 2rem));
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid #3a3a3c;
+  border-radius: 1rem;
+  background: #1a1a1b;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  text-align: center;
+}
+
+.wordle-result-modal h2,
+.wordle-result-modal p {
+  margin: 0;
+}
+
+.wordle-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 0.2rem;
+}
+
+.wordle-result-link,
+.wordle-result-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+}
+
+.wordle-result-link {
+  background: #538d4e;
+  color: #f8f8f8;
+}
+
+.wordle-result-dismiss {
+  background: #2f3033;
+  color: #f8f8f8;
+  cursor: pointer;
 }
 
 .connections-nyt-page {
@@ -2481,6 +2540,61 @@ button {
   font-size: 0.8rem;
 }
 
+.connections-result-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: rgba(17, 17, 17, 0.28);
+}
+
+.connections-result-modal {
+  width: min(340px, calc(100vw - 2rem));
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 1rem;
+  background: #fcfbf6;
+  box-shadow: 0 20px 48px rgba(17, 17, 17, 0.18);
+  text-align: center;
+}
+
+.connections-result-modal h2,
+.connections-result-modal p {
+  margin: 0;
+}
+
+.connections-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 0.2rem;
+}
+
+.connections-result-link,
+.connections-result-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+}
+
+.connections-result-link {
+  background: #111;
+  color: #fff;
+}
+
+.connections-result-dismiss {
+  background: rgba(17, 17, 17, 0.08);
+  color: #111;
+  cursor: pointer;
+}
+
 .connections-maker-builder {
   width: min(100%, 980px);
   display: grid;
@@ -2521,6 +2635,11 @@ button {
   background: rgba(255, 255, 255, 0.82);
   color: #111;
   outline: none;
+}
+
+.connections-maker-category-input::placeholder,
+.connections-maker-word-input::placeholder {
+  color: rgba(17, 17, 17, 0.42);
 }
 
 .connections-maker-category-input {

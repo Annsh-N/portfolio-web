@@ -7,10 +7,10 @@ import { createConnections } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 
 const defaultGroups: ConnectionsGroup[] = [
-  { category: "", color: "amber", words: ["", "", "", ""] },
-  { category: "", color: "green", words: ["", "", "", ""] },
-  { category: "", color: "blue", words: ["", "", "", ""] },
-  { category: "", color: "purple", words: ["", "", "", ""] },
+  { category: "LANGUAGES", color: "amber", words: ["JAVA", "PYTHON", "RUST", "RUBY"] },
+  { category: "DATA STORES", color: "green", words: ["REDIS", "MYSQL", "MONGO", "POSTGRES"] },
+  { category: "API BUILDING", color: "blue", words: ["ROUTE", "TOKEN", "CACHE", "QUEUE"] },
+  { category: "DEV TOOLS", color: "purple", words: ["DOCKER", "GITHUB", "POSTMAN", "VSCODE"] },
 ];
 
 type CreateResultState = {
@@ -30,7 +30,17 @@ export function CreateConnectionsPage() {
     [result],
   );
 
-  const previewWords = useMemo(() => groups.flatMap((group) => group.words), [groups]);
+  const resolvedGroups = useMemo(
+    () =>
+      groups.map((group, groupIndex) => ({
+        ...group,
+        category: group.category.trim() || defaultGroups[groupIndex].category,
+        words: group.words.map((word, wordIndex) => word.trim() || defaultGroups[groupIndex].words[wordIndex]),
+      })),
+    [groups],
+  );
+
+  const previewWords = useMemo(() => resolvedGroups.flatMap((group) => group.words), [resolvedGroups]);
 
   async function handleCreate() {
     if (loading) {
@@ -41,7 +51,7 @@ export function CreateConnectionsPage() {
     setLoading(true);
 
     try {
-      const response = await createConnections(groups);
+      const response = await createConnections(resolvedGroups);
       setResult({ path: response.game.path, expiresAt: response.game.expiresAt });
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not generate Connections.");
@@ -107,7 +117,7 @@ export function CreateConnectionsPage() {
                     ),
                   )
                 }
-                placeholder="CATEGORY"
+                placeholder={defaultGroups[groupIndex].category}
                 type="text"
                 value={group.category}
               />
@@ -130,7 +140,7 @@ export function CreateConnectionsPage() {
                         ),
                       )
                     }
-                    placeholder={`ITEM ${wordIndex + 1}`}
+                    placeholder={defaultGroups[groupIndex].words[wordIndex]}
                     type="text"
                     value={word}
                   />
