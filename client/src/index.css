@@ -88,6 +88,10 @@ button {
   padding: 9rem 2.5rem 4.5rem;
 }
 
+.app-shell.is-game-route .app-main {
+  padding: 0;
+}
+
 .page-shell,
 .game-shell {
   width: min(1120px, 100%);
@@ -1756,6 +1760,96 @@ button {
   gap: 1.4rem;
 }
 
+.create-hub-page {
+  min-height: calc(100vh - 13.5rem);
+  display: grid;
+  align-items: center;
+}
+
+.create-hub-shell {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.create-hub-shell h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  letter-spacing: -0.05em;
+}
+
+.create-hub-shell p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--muted);
+}
+
+.create-hub-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0.65rem;
+}
+
+.create-hub-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  padding: 1.4rem;
+  border: 1px solid rgba(167, 201, 255, 0.12);
+  border-radius: 1.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.create-hub-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(167, 201, 255, 0.24);
+}
+
+.create-hub-card.is-wordle {
+  background:
+    linear-gradient(90deg, rgba(83, 141, 78, 0.13) 0 16%, transparent 16% 21%, rgba(181, 159, 59, 0.13) 21% 37%, transparent 37% 42%, rgba(58, 58, 60, 0.16) 42% 58%, transparent 58%),
+    linear-gradient(180deg, rgba(12, 24, 42, 0.94), rgba(8, 17, 31, 0.96));
+}
+
+.create-hub-card.is-connections {
+  background:
+    linear-gradient(90deg, rgba(249, 223, 109, 0.12) 0 25%, rgba(160, 195, 90, 0.1) 25% 50%, rgba(176, 196, 239, 0.1) 50% 75%, rgba(186, 129, 197, 0.1) 75% 100%),
+    linear-gradient(180deg, rgba(12, 24, 42, 0.94), rgba(8, 17, 31, 0.96));
+  background-blend-mode: screen, normal;
+}
+
+.create-hub-card h2 {
+  margin: 0.45rem 0 0.55rem;
+  font-family: "Sora Variable", sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+  line-height: 1.05;
+}
+
+.create-hub-card p {
+  max-width: 28ch;
+}
+
+.create-hub-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #f8fbff;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .create-card {
   display: grid;
   gap: 1rem;
@@ -1872,6 +1966,828 @@ button {
   display: grid;
   gap: 1.5rem;
   justify-items: center;
+}
+
+.wordle-nyt-page {
+  min-height: 100vh;
+  background: #121213;
+  color: #d7dadc;
+}
+
+.wordle-nyt-shell {
+  width: min(100%, 500px);
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.wordle-nyt-header {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: 3.95rem;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.wordle-nyt-title {
+  margin: 0.4rem 0;
+  text-align: center;
+  color: #f8f8f8;
+  font-family: "Work Sans Variable", sans-serif;
+  font-size: 2.05rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.wordle-nyt-site-link,
+.wordle-nyt-header-meta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #818384;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.wordle-nyt-site-link {
+  left: 1rem;
+}
+
+.wordle-nyt-header-meta {
+  right: 1rem;
+}
+
+.wordle-nyt-status {
+  min-height: 1.55rem;
+  padding: 0.65rem 1rem 0;
+  text-align: center;
+  color: #d7dadc;
+  font-size: 0.92rem;
+}
+
+.wordle-nyt-subnav {
+  display: flex;
+  justify-content: center;
+  padding: 0.35rem 1rem 0;
+}
+
+.wordle-nyt-create-link {
+  color: #818384;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 0.16rem;
+}
+
+.wordle-nyt-create-link.is-header {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.wordle-nyt-board-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+}
+
+.wordle-nyt-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+
+.wordle-nyt-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  min-height: 62px;
+  border: 2px solid #3a3a3c;
+  color: #f8f8f8;
+  font-size: 2.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.wordle-nyt-tile.is-correct {
+  border-color: #538d4e;
+  background: #538d4e;
+}
+
+.wordle-nyt-tile.is-present {
+  border-color: #b59f3b;
+  background: #b59f3b;
+}
+
+.wordle-nyt-tile.is-absent {
+  border-color: #3a3a3c;
+  background: #3a3a3c;
+}
+
+.wordle-nyt-tile.is-filled {
+  border-color: #565758;
+}
+
+.wordle-nyt-keyboard {
+  height: 200px;
+  padding: 0 8px 14px;
+}
+
+.wordle-nyt-keyboard-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto 8px;
+}
+
+.wordle-nyt-spacer-half {
+  flex-grow: 0.5;
+}
+
+.wordle-nyt-key {
+  height: 58px;
+  margin-right: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  flex-grow: 1;
+  color: #f8f8f8;
+  background: #818384;
+  font-family: inherit;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wordle-nyt-key:last-child {
+  margin-right: 0;
+}
+
+.wordle-nyt-key.is-wide {
+  flex-grow: 1.5;
+  font-size: 0.78rem;
+}
+
+.wordle-nyt-key.is-correct {
+  background: #538d4e;
+}
+
+.wordle-nyt-key.is-present {
+  background: #b59f3b;
+}
+
+.wordle-nyt-key.is-absent {
+  background: #3a3a3c;
+}
+
+.wordle-nyt-error {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  background: #121213;
+  color: #d7dadc;
+}
+
+.wordle-nyt-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: #2f3033;
+  color: #f8f8f8;
+}
+
+.wordle-maker-shell {
+  justify-content: start;
+}
+
+.wordle-maker-result-strip {
+  min-height: 3.5rem;
+  padding: 0.55rem 1rem 0;
+  display: grid;
+  align-content: start;
+  gap: 0.28rem;
+}
+
+.wordle-maker-url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #f8f8f8;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.wordle-maker-result-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: #818384;
+  font-size: 0.76rem;
+}
+
+.wordle-maker-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  color: #d7dadc;
+  background: transparent;
+  cursor: pointer;
+}
+
+.wordle-maker-hint {
+  color: #818384;
+  font-size: 0.8rem;
+}
+
+.wordle-maker-board {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.wordle-nyt-key.is-maker-action {
+  background: #538d4e;
+}
+
+.connections-nyt-page {
+  min-height: 100vh;
+  background: #f4f4f4;
+  color: #111;
+}
+
+.connections-nyt-shell {
+  width: min(100%, 860px);
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.connections-nyt-topbar {
+  width: min(100%, 800px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  color: rgba(17, 17, 17, 0.58);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.connections-nyt-site-link {
+  color: inherit;
+}
+
+.connections-nyt-topbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.connections-nyt-create-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16rem;
+}
+
+.connections-nyt-title {
+  margin: 0.6rem 0 0.25rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "Arial", sans-serif;
+}
+
+.connections-nyt-message {
+  margin: 0 0 1rem;
+  color: rgba(17, 17, 17, 0.7);
+  text-align: center;
+}
+
+.connections-nyt-categories {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 800px);
+  padding: 10px;
+}
+
+.connections-nyt-category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  margin-top: 12px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.connections-nyt-category div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.connections-nyt-category strong {
+  font-size: 1.4rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: 900;
+}
+
+.connections-nyt-category small {
+  font-size: 1rem;
+}
+
+.connections-nyt-category.is-amber {
+  background: rgb(249, 223, 109);
+}
+
+.connections-nyt-category.is-green {
+  background: rgb(160, 195, 90);
+}
+
+.connections-nyt-category.is-blue {
+  background: rgb(176, 196, 239);
+}
+
+.connections-nyt-category.is-purple {
+  background: rgb(186, 129, 197);
+}
+
+.connections-nyt-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: min(100%, 800px);
+  padding: 10px;
+}
+
+.connections-nyt-word {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 104px;
+  padding: 20px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: rgb(226, 226, 216);
+  color: #111;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s ease;
+}
+
+.connections-nyt-word.is-selected {
+  background: rgb(90, 89, 78);
+  color: white;
+  transform: scale(1.02);
+}
+
+.connections-nyt-word.is-shaking {
+  animation: connections-word-shake 0.38s ease-in-out;
+}
+
+.connections-nyt-controls {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+  width: min(100%, 800px);
+  margin-top: 1rem;
+}
+
+.connections-nyt-button-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.connections-nyt-button {
+  min-height: 60px;
+  padding: 10px 20px;
+  border: 2px solid #111;
+  border-radius: 999px;
+  background: transparent;
+  color: #111;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+
+.connections-nyt-button.is-primary {
+  background: #111;
+  color: white;
+}
+
+.connections-nyt-mistakes {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.2rem;
+}
+
+.connections-nyt-mistakes span {
+  color: rgb(90, 89, 78);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.connections-nyt-error {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  background: #f4f4f4;
+  color: #111;
+}
+
+.connections-nyt-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid #111;
+  border-radius: 999px;
+  color: #111;
+}
+
+.connections-maker-shell {
+  width: min(100%, 1040px);
+  justify-content: start;
+  padding-top: 1.1rem;
+  padding-bottom: 1.25rem;
+}
+
+.connections-maker-result-strip {
+  width: min(100%, 800px);
+  min-height: 3.35rem;
+  margin-bottom: 0.75rem;
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+}
+
+.connections-maker-url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #111;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.76rem;
+}
+
+.connections-maker-result-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 0.75rem;
+}
+
+.connections-maker-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0;
+  color: #111;
+  background: transparent;
+  cursor: pointer;
+}
+
+.connections-maker-hint {
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 0.8rem;
+}
+
+.connections-maker-builder {
+  width: min(100%, 980px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-bottom: 0.9rem;
+}
+
+.connections-maker-group {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.7rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.connections-maker-group.is-amber {
+  box-shadow: inset 0 0 0 1px rgba(249, 223, 109, 0.65);
+}
+
+.connections-maker-group.is-green {
+  box-shadow: inset 0 0 0 1px rgba(160, 195, 90, 0.65);
+}
+
+.connections-maker-group.is-blue {
+  box-shadow: inset 0 0 0 1px rgba(176, 196, 239, 0.85);
+}
+
+.connections-maker-group.is-purple {
+  box-shadow: inset 0 0 0 1px rgba(186, 129, 197, 0.75);
+}
+
+.connections-maker-category-input,
+.connections-maker-word-input {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #111;
+  outline: none;
+}
+
+.connections-maker-category-input {
+  padding: 0.7rem 0.75rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.connections-maker-word-grid {
+  display: grid;
+  gap: 0.38rem;
+}
+
+.connections-maker-word-input {
+  padding: 0.62rem 0.72rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.connections-maker-preview {
+  width: min(100%, 800px);
+  margin-bottom: 0.6rem;
+}
+
+.connections-maker-preview .connections-nyt-word {
+  min-height: 78px;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.create-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 14% 26%, rgba(245, 158, 11, 0.15), transparent 26%),
+    radial-gradient(circle at 84% 20%, rgba(125, 211, 252, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(13, 27, 47, 0.9), rgba(8, 18, 33, 0.92));
+}
+
+.create-hero::before {
+  content: "";
+  position: absolute;
+  inset: auto 2rem -2.1rem auto;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 1.5rem;
+  transform: rotate(18deg);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent),
+    linear-gradient(180deg, rgba(181, 159, 59, 0.2), rgba(83, 141, 78, 0.12));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.create-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.create-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.create-card-wordle {
+  background:
+    radial-gradient(circle at 84% 14%, rgba(181, 159, 59, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(14, 23, 38, 0.92), rgba(9, 16, 28, 0.94));
+}
+
+.create-card-wordle::before {
+  background:
+    linear-gradient(90deg, rgba(83, 141, 78, 0.16) 0 18%, transparent 18% 24%, rgba(181, 159, 59, 0.16) 24% 42%, transparent 42% 48%, rgba(58, 58, 60, 0.18) 48% 66%, transparent 66%);
+  opacity: 0.22;
+}
+
+.create-card-connections {
+  background:
+    radial-gradient(circle at 88% 12%, rgba(186, 129, 197, 0.13), transparent 22%),
+    linear-gradient(180deg, rgba(13, 27, 47, 0.9), rgba(8, 19, 34, 0.92));
+}
+
+.create-card-connections::before {
+  background:
+    linear-gradient(90deg, rgba(249, 223, 109, 0.11) 0 25%, rgba(160, 195, 90, 0.1) 25% 50%, rgba(176, 196, 239, 0.11) 50% 75%, rgba(186, 129, 197, 0.1) 75% 100%);
+  opacity: 0.14;
+}
+
+.create-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.create-card-heading svg {
+  color: rgba(238, 244, 255, 0.82);
+}
+
+.create-card-wordle .create-card-heading h2,
+.create-card-connections .create-card-heading h2 {
+  max-width: 18ch;
+}
+
+.create-card-wordle input {
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.builder-group {
+  padding: 0.9rem;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.builder-amber {
+  box-shadow: inset 0 0 0 1px rgba(249, 223, 109, 0.12);
+}
+
+.builder-green {
+  box-shadow: inset 0 0 0 1px rgba(160, 195, 90, 0.12);
+}
+
+.builder-blue {
+  box-shadow: inset 0 0 0 1px rgba(176, 196, 239, 0.14);
+}
+
+.builder-purple {
+  box-shadow: inset 0 0 0 1px rgba(186, 129, 197, 0.14);
+}
+
+.feedback-card.is-success {
+  background:
+    radial-gradient(circle at top right, rgba(125, 211, 252, 0.12), transparent 28%),
+    linear-gradient(180deg, rgba(12, 28, 51, 0.9), rgba(8, 19, 35, 0.94));
+}
+
+.feedback-card-subtle {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), transparent 30%),
+    rgba(255, 255, 255, 0.03);
+}
+
+@keyframes connections-word-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-8px);
+  }
+
+  40% {
+    transform: translateX(8px);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+@media (max-width: 760px) {
+  .wordle-nyt-title {
+    font-size: 1.7rem;
+  }
+
+  .wordle-nyt-site-link,
+  .wordle-nyt-header-meta {
+    font-size: 0.58rem;
+  }
+
+  .wordle-nyt-header {
+    min-height: 3.4rem;
+  }
+
+  .wordle-nyt-site-link {
+    left: 0.7rem;
+  }
+
+  .wordle-nyt-header-meta {
+    right: 0.7rem;
+  }
+
+  .wordle-nyt-tile {
+    min-width: 16vw;
+    min-height: 16vw;
+    font-size: 1.8rem;
+  }
+
+  .wordle-nyt-keyboard {
+    height: auto;
+    padding: 0 6px 12px;
+  }
+
+  .wordle-nyt-key {
+    height: 54px;
+    font-size: 0.88rem;
+  }
+
+  .create-hub-page {
+    min-height: auto;
+  }
+
+  .create-hub-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .create-hub-card {
+    min-height: 220px;
+  }
+
+  .wordle-maker-result-strip {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+
+  .connections-nyt-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .connections-nyt-topbar {
+    align-items: start;
+    gap: 0.65rem;
+  }
+
+  .connections-nyt-topbar-actions {
+    flex-direction: column;
+    align-items: end;
+    gap: 0.2rem;
+  }
+
+  .connections-nyt-word {
+    min-height: 82px;
+    padding: 12px 8px;
+    font-size: 1rem;
+  }
+
+  .connections-nyt-category {
+    min-height: 88px;
+    padding: 16px;
+  }
+
+  .connections-nyt-category strong {
+    font-size: 1.1rem;
+  }
+
+  .connections-nyt-category small {
+    font-size: 0.84rem;
+  }
+
+  .connections-maker-builder {
+    grid-template-columns: 1fr;
+  }
+
+  .connections-maker-result-strip {
+    width: 100%;
+  }
 }
 
 .wordle-board {

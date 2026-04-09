@@ -1,6 +1,6 @@
 import { Activity, ArrowUpRight, Atom, CloudSun, FileText, FolderKanban, GraduationCap, MapPin, MessageSquareMore, MoveRight, RefreshCcw } from "lucide-react";
 import { motion } from "framer-motion";
-import { certifications, experiences, interests, profile } from "@shared/content";
+import { experiences, profile } from "@shared/content";
 import type { EducationSnapshot, GitHubSnapshot, PresenceSnapshot, SemesterCourseNode, SkillState } from "@shared/types";
 import { CourseworkGraph } from "@/components/CourseworkGraph";
 import { GitHubPulsePanel } from "@/components/GitHubPulsePanel";
@@ -210,35 +210,6 @@ export function HomePage({ education, github, presence, coursework, skills, onGr
         <article className="panel skill-field-panel">
           <SkillField onGrow={onGrowSkill} state={skills} />
         </article>
-      </section>
-
-      <section className="page-section">
-        <SectionHeading
-          description="A few signals around continued learning and the things I keep returning to."
-          title="Signals"
-        />
-
-        <div className="signal-grid">
-          <article className="panel signal-card">
-            <span className="eyebrow">Certifications</span>
-            <div className="signal-list">
-              {certifications.map((cert) => (
-                <div className="signal-row" key={cert.name}>
-                  <strong>{cert.name}</strong>
-                  <small>{cert.date}</small>
-                </div>
-              ))}
-            </div>
-          </article>
-          <article className="panel signal-card">
-            <span className="eyebrow">Interests</span>
-            <div className="interest-cloud">
-              {interests.map((interest) => (
-                <span key={interest}>{interest}</span>
-              ))}
-            </div>
-          </article>
-        </div>
       </section>
     </motion.div>
   );

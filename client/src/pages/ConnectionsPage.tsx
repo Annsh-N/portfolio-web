@@ -31,6 +31,7 @@ export function ConnectionsPage() {
   const [mistakes, setMistakes] = useState(4);
   const [message, setMessage] = useState("Create four groups of four.");
   const [error, setError] = useState<string | null>(null);
+  const [shakingWords, setShakingWords] = useState<string[]>([]);
 
   useEffect(() => {
     fetchGame("connections", id)
@@ -66,6 +67,8 @@ export function ConnectionsPage() {
     if (!match) {
       setMistakes((value) => Math.max(0, value - 1));
       setMessage("Not quite. The board rejects that grouping.");
+      setShakingWords(selected);
+      window.setTimeout(() => setShakingWords([]), 420);
       setSelected([]);
       return;
     }
@@ -77,11 +80,11 @@ export function ConnectionsPage() {
 
   if (error) {
     return (
-      <div className="game-shell">
-        <article className="panel game-error-card">
+      <div className="connections-nyt-page">
+        <article className="connections-nyt-error">
           <AlertTriangle size={22} />
           <h1>{error}</h1>
-          <Link className="secondary-button" to="/create">
+          <Link className="connections-nyt-action" to="/create/connections">
             <ArrowLeft size={16} />
             Back to create
           </Link>
@@ -92,8 +95,8 @@ export function ConnectionsPage() {
 
   if (!config) {
     return (
-      <div className="game-shell">
-        <article className="panel game-error-card">
+      <div className="connections-nyt-page">
+        <article className="connections-nyt-error">
           <RefreshCcw className="spin" size={22} />
           <h1>Loading Connections board...</h1>
         </article>
@@ -102,36 +105,40 @@ export function ConnectionsPage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="game-shell" initial={{ opacity: 0, y: 16 }}>
-      <article className="panel game-header-card">
-        <div>
-          <span className="eyebrow">Custom Connections</span>
-          <h1>Create four groups of four.</h1>
-          <p>{message}</p>
-        </div>
-        <div className="game-meta">
-          <span>Expires {formatDate(config.expiresAt)}</span>
-          <Link className="secondary-button" to="/create">
-            <ArrowLeft size={16} />
-            New game
+    <motion.div animate={{ opacity: 1, y: 0 }} className="connections-nyt-page" initial={{ opacity: 0, y: 16 }}>
+      <div className="connections-nyt-shell">
+        <div className="connections-nyt-topbar">
+          <Link className="connections-nyt-site-link" to="/">
+            Annsh Navle
           </Link>
+          <div className="connections-nyt-topbar-actions">
+            <span>{formatDate(config.createdAt)}</span>
+            <Link className="connections-nyt-create-link" to="/create/connections">
+              Make your own
+            </Link>
+          </div>
         </div>
-      </article>
 
-      <article className="panel connections-shell">
-        <div className="connections-solved">
+        <h1 className="connections-nyt-title">Create four groups of four!</h1>
+        <p className="connections-nyt-message">{message}</p>
+
+        <div className="connections-nyt-categories">
           {solved.map((group) => (
-            <div className={`connections-category is-${colorMap[group.color]}`} key={group.category}>
-              <strong>{group.category}</strong>
-              <small>{group.words.join(", ")}</small>
+            <div className={`connections-nyt-category is-${colorMap[group.color]}`} key={group.category}>
+              <div>
+                <strong>{group.category}</strong>
+                <small>{group.words.join(", ")}</small>
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="connections-grid">
+        <div className="connections-nyt-grid">
           {remaining.map((word) => (
             <button
-              className={`connections-tile ${selected.includes(word) ? "is-selected" : ""}`}
+              className={`connections-nyt-word ${selected.includes(word) ? "is-selected" : ""} ${
+                shakingWords.includes(word) ? "is-shaking" : ""
+              }`}
               key={word}
               onClick={() => toggleWord(word)}
               type="button"
@@ -141,21 +148,23 @@ export function ConnectionsPage() {
           ))}
         </div>
 
-        <div className="connections-controls">
-          <span>Mistakes remaining: {"•".repeat(mistakes)}</span>
-          <div>
-            <button className="secondary-button" onClick={() => setPool((current) => shuffle(current))} type="button">
+        <div className="connections-nyt-controls">
+          <div className="connections-nyt-button-row">
+            <button className="connections-nyt-button" onClick={() => setPool((current) => shuffle(current))} type="button">
               Shuffle
             </button>
-            <button className="secondary-button" onClick={() => setSelected([])} type="button">
+            <button className="connections-nyt-button" onClick={() => setSelected([])} type="button">
               Deselect all
             </button>
-            <button className="primary-button" onClick={submitSelection} type="button">
+            <button className="connections-nyt-button is-primary" onClick={submitSelection} type="button">
               Submit
             </button>
           </div>
+          <div className="connections-nyt-mistakes">
+            Mistakes remaining: <span>{"•".repeat(mistakes)}</span>
+          </div>
         </div>
-      </article>
+      </div>
     </motion.div>
   );
 }

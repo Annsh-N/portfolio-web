@@ -4,6 +4,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { FloatingNav } from "@/components/FloatingNav";
 import { fetchBootstrap, fetchMusic, fetchPresence, fetchSkillState, growSkill, recommendMusic } from "@/lib/api";
 import { CreatePage } from "@/pages/CreatePage";
+import { CreateConnectionsPage } from "@/pages/CreateConnectionsPage";
+import { CreateWordlePage } from "@/pages/CreateWordlePage";
 import { HomePage } from "@/pages/HomePage";
 import { MessageMePage } from "@/pages/MessageMePage";
 import { ProjectsPage } from "@/pages/ProjectsPage";
@@ -93,6 +95,10 @@ const fallbackMusic: MusicSnapshot = {
 
 function App() {
   const location = useLocation();
+  const isImmersivePuzzleRoute =
+    location.pathname.startsWith("/play/") ||
+    location.pathname === "/create/wordle" ||
+    location.pathname === "/create/connections";
   const [education, setEducation] = useState<EducationSnapshot>(fallbackEducation);
   const [github, setGithub] = useState<GitHubSnapshot>(fallbackGithub);
   const [presence, setPresence] = useState<PresenceSnapshot>(fallbackPresence);
@@ -217,13 +223,15 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isImmersivePuzzleRoute ? "is-game-route" : ""}`}>
       <div className="app-backdrop" />
-      <FloatingNav
-        music={music}
-        onRecommendTrack={handleRecommendTrack}
-        shrinkProgress={navShrinkProgress}
-      />
+      {!isImmersivePuzzleRoute ? (
+        <FloatingNav
+          music={music}
+          onRecommendTrack={handleRecommendTrack}
+          shrinkProgress={navShrinkProgress}
+        />
+      ) : null}
 
       <main className="app-main">
         <AnimatePresence mode="wait">
@@ -242,6 +250,8 @@ function App() {
               path="/"
             />
             <Route element={<CreatePage />} path="/create" />
+            <Route element={<CreateWordlePage />} path="/create/wordle" />
+            <Route element={<CreateConnectionsPage />} path="/create/connections" />
             <Route element={<MessageMePage />} path="/message-me" />
             <Route element={<ResumePage />} path="/resume" />
             <Route element={<ProjectsPage />} path="/projects" />

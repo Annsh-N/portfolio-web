@@ -14,6 +14,8 @@ const keyboardRows = [
 
 type TileState = "empty" | "correct" | "present" | "absent";
 
+type KeyState = Exclude<TileState, "empty">;
+
 function evaluateGuess(answer: string, guess: string): TileState[] {
   const states: TileState[] = Array.from({ length: 5 }, () => "absent");
   const remaining = answer.split("");
@@ -44,6 +46,9 @@ export function WordlePage() {
   const [statuses, setStatuses] = useState<TileState[][]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const isSolved = !!config && guesses.includes(config.answer);
+  const isComplete = isSolved || guesses.length >= 6;
+
   useEffect(() => {
     fetchGame("wordle", id)
       .then((game) => setConfig(game as WordleGameConfig))
@@ -72,12 +77,12 @@ export function WordlePage() {
   }, [currentGuess, guesses, statuses]);
 
   function pushLetter(letter: string) {
-    if (currentGuess.length >= 5 || guesses.length >= 6) return;
+    if (currentGuess.length >= 5 || isComplete) return;
     setCurrentGuess((value) => `${value}${letter}`);
   }
 
   function submitGuess() {
-    if (!config) return;
+    if (!config || isComplete) return;
     if (currentGuess.length !== 5) {
       setMessage("Each guess must be five letters.");
       return;
@@ -104,7 +109,7 @@ export function WordlePage() {
   }
 
   const handleKeyDown = useEffectEvent((event: KeyboardEvent) => {
-    if (!config || guesses.length >= 6) return;
+    if (!config || isComplete) return;
     const key = event.key.toUpperCase();
     if (key === "ENTER") {
       submitGuess();
@@ -128,13 +133,35 @@ export function WordlePage() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  const keyStates = useMemo(() => {
+    const priority: Record<KeyState, number> = {
+      absent: 1,
+      present: 2,
+      correct: 3,
+    };
+
+    return guesses.reduce<Record<string, KeyState>>((accumulator, guess, guessIndex) => {
+      guess.split("").forEach((letter, letterIndex) => {
+        const nextState = statuses[guessIndex]?.[letterIndex];
+        if (!nextState || nextState === "empty") {
+          return;
+        }
+        const currentState = accumulator[letter];
+        if (!currentState || priority[nextState] > priority[currentState]) {
+          accumulator[letter] = nextState;
+        }
+      });
+      return accumulator;
+    }, {});
+  }, [guesses, statuses]);
+
   if (error) {
     return (
-      <div className="game-shell">
-        <article className="panel game-error-card">
+      <div className="wordle-nyt-page">
+        <article className="wordle-nyt-error">
           <AlertTriangle size={22} />
           <h1>{error}</h1>
-          <Link className="secondary-button" to="/create">
+          <Link className="wordle-nyt-action" to="/create/wordle">
             <ArrowLeft size={16} />
             Back to create
           </Link>
@@ -145,8 +172,8 @@ export function WordlePage() {
 
   if (!config) {
     return (
-      <div className="game-shell">
-        <article className="panel game-error-card">
+      <div className="wordle-nyt-page">
+        <article className="wordle-nyt-error">
           <RefreshCcw className="spin" size={22} />
           <h1>Loading custom Wordle...</h1>
         </article>
@@ -155,39 +182,49 @@ export function WordlePage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="game-shell" initial={{ opacity: 0, y: 16 }}>
-      <article className="panel game-header-card">
-        <div>
-          <span className="eyebrow">Custom Wordle</span>
-          <h1>Find the five-letter answer.</h1>
-          <p>{message}</p>
+    <motion.div animate={{ opacity: 1, y: 0 }} className="wordle-nyt-page" initial={{ opacity: 0, y: 16 }}>
+      <div className="wordle-nyt-shell">
+        <header className="wordle-nyt-header">
+          <Link className="wordle-nyt-site-link" to="/">
+            Annsh Navle
+          </Link>
+          <h1 className="wordle-nyt-title">WORDLE</h1>
+          <div className="wordle-nyt-header-meta">
+            <span>{formatDate(config.createdAt)}</span>
+          </div>
+        </header>
+
+        <div className="wordle-nyt-status" role="status">
+          {message}
         </div>
-        <div className="game-meta">
-          <span>Expires {formatDate(config.expiresAt)}</span>
-          <Link className="secondary-button" to="/create">
-            <ArrowLeft size={16} />
-            New game
+
+        <div className="wordle-nyt-subnav">
+          <Link className="wordle-nyt-create-link" to="/create/wordle">
+            Make your own
           </Link>
         </div>
-      </article>
 
-      <article className="panel wordle-shell">
-        <div className="wordle-board">
+        <div className="wordle-nyt-board-container">
+          <div className="wordle-nyt-board">
           {boardRows.map((row, rowIndex) =>
             row.letters.map((letter, cellIndex) => (
-              <div className={`wordle-tile is-${row.states[cellIndex]}`} key={`${rowIndex}-${cellIndex}`}>
+              <div className={`wordle-nyt-tile is-${row.states[cellIndex]}`} key={`${rowIndex}-${cellIndex}`}>
                 {letter}
               </div>
             )),
           )}
         </div>
+        </div>
 
-        <div className="wordle-keyboard">
-          {keyboardRows.map((row) => (
-            <div className="wordle-keyboard-row" key={row.join("")}>
+        <div className="wordle-nyt-keyboard">
+          {keyboardRows.map((row, rowIndex) => (
+            <div className="wordle-nyt-keyboard-row" key={row.join("")}>
+              {rowIndex === 1 ? <div className="wordle-nyt-spacer-half" /> : null}
               {row.map((key) => (
                 <button
-                  className={`wordle-key ${key.length > 1 ? "is-wide" : ""}`}
+                  className={`wordle-nyt-key ${key.length > 1 ? "is-wide" : ""} ${
+                    keyStates[key] ? `is-${keyStates[key]}` : ""
+                  }`}
                   key={key}
                   onClick={() => {
                     if (key === "ENTER") submitGuess();
@@ -199,10 +236,11 @@ export function WordlePage() {
                   {key}
                 </button>
               ))}
+              {rowIndex === 1 ? <div className="wordle-nyt-spacer-half" /> : null}
             </div>
           ))}
         </div>
-      </article>
+      </div>
     </motion.div>
   );
 }
