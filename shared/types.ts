@@ -133,9 +133,35 @@ export type MusicTrack = {
   id: string;
   title: string;
   artist: string;
+  album: string;
   durationMs: number;
-  progressMs: number;
-  isPlaying: boolean;
+};
+
+export type MusicHistoryItem = MusicTrack & {
+  playedAt: string;
+};
+
+export type MusicRecommendation = MusicTrack & {
+  recommendationId: string;
+  note: string;
+  requestedAt: string;
+};
+
+export type MusicSnapshot = {
+  lastPlayed: MusicHistoryItem | null;
+  recentTracks: MusicHistoryItem[];
+  recommendations: MusicRecommendation[];
+  updatedAt: string;
+};
+
+export type MusicSearchPayload = {
+  query: string;
+  results: MusicTrack[];
+};
+
+export type MusicRecommendationCreatePayload = {
+  trackId: string;
+  note: string;
 };
 
 export type WordleGameConfig = {
@@ -184,7 +210,7 @@ export type BootstrapPayload = {
   education: EducationSnapshot;
   github: GitHubSnapshot;
   presence: PresenceSnapshot;
-  currentTrack: MusicTrack;
+  music: MusicSnapshot;
   coursework: SemesterCourseNode[];
   skills: SkillState;
 };

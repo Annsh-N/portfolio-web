@@ -29,3 +29,13 @@ export const connectionsSchema = z
       });
     }
   });
+
+export const musicRecommendationSchema = z.object({
+  trackId: z.string().trim().min(1, "Choose a song to recommend."),
+  note: z
+    .string()
+    .trim()
+    .max(140, "Keep the note under 140 characters.")
+    .optional()
+    .transform((value) => value ?? ""),
+});

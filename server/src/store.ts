@@ -1,11 +1,12 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { initialSkills } from "../../shared/content.js";
-import type { GameConfig, SkillState } from "../../shared/types.js";
+import type { GameConfig, MusicRecommendation, SkillState } from "../../shared/types.js";
 
 type StoreShape = {
   skills: SkillState;
   games: GameConfig[];
+  musicRecommendations: MusicRecommendation[];
 };
 
 const cwd = process.cwd();
@@ -20,6 +21,7 @@ const seedStore: StoreShape = {
     updatedAt: new Date().toISOString(),
   },
   games: [],
+  musicRecommendations: [],
 };
 
 let writeChain = Promise.resolve();
@@ -54,6 +56,26 @@ function normalizeSkillState(skills: SkillState | undefined): SkillState {
   };
 }
 
+function normalizeMusicRecommendations(recommendations: MusicRecommendation[] | undefined): MusicRecommendation[] {
+  if (!Array.isArray(recommendations)) {
+    return [];
+  }
+
+  return recommendations
+    .filter(
+      (entry) =>
+        typeof entry?.recommendationId === "string" &&
+        typeof entry?.id === "string" &&
+        typeof entry?.title === "string" &&
+        typeof entry?.artist === "string" &&
+        typeof entry?.album === "string" &&
+        typeof entry?.durationMs === "number" &&
+        typeof entry?.note === "string" &&
+        typeof entry?.requestedAt === "string",
+    )
+    .slice(0, 20);
+}
+
 async function ensureStore(): Promise<void> {
   await mkdir(dataDir, { recursive: true });
   try {
@@ -70,6 +92,7 @@ export async function readStore(): Promise<StoreShape> {
   return {
     skills: normalizeSkillState(parsed.skills),
     games: Array.isArray(parsed.games) ? parsed.games : [],
+    musicRecommendations: normalizeMusicRecommendations(parsed.musicRecommendations),
   };
 }
 

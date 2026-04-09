@@ -1,13 +1,11 @@
 import type { CSSProperties } from "react";
 import { NavLink } from "react-router-dom";
-import type { MusicTrack } from "@shared/types";
+import type { MusicSnapshot } from "@shared/types";
 import { MusicMiniPlayer } from "./MusicMiniPlayer";
 
 type FloatingNavProps = {
-  currentTrack: MusicTrack;
-  queue: MusicTrack[];
-  onTogglePlayback: () => void;
-  onQueueTrack: (id: string) => void;
+  music: MusicSnapshot;
+  onRecommendTrack: (trackId: string, note: string) => Promise<void>;
   shrinkProgress: number;
 };
 
@@ -25,7 +23,6 @@ export function FloatingNav({ shrinkProgress, ...props }: FloatingNavProps) {
   const style = {
     width: `min(${maxWidth}px, calc(100% - ${horizontalInset}rem))`,
     "--nav-player-min-width": `${285 - 125 * shrinkProgress}px`,
-    "--nav-player-progress-width": `${104 - 56 * shrinkProgress}px`,
     "--nav-player-gap": `${0.85 - 0.25 * shrinkProgress}rem`,
     "--nav-player-padding-x": `${0.75 - 0.18 * shrinkProgress}rem`,
     "--nav-gap": `${0.8 - 0.2 * shrinkProgress}rem`,

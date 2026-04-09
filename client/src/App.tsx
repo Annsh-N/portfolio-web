@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { startTransition, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { FloatingNav } from "@/components/FloatingNav";
-import { fetchBootstrap, fetchPresence, fetchSkillState, growSkill } from "@/lib/api";
+import { fetchBootstrap, fetchMusic, fetchPresence, fetchSkillState, growSkill, recommendMusic } from "@/lib/api";
 import { CreatePage } from "@/pages/CreatePage";
 import { HomePage } from "@/pages/HomePage";
 import { MessageMePage } from "@/pages/MessageMePage";
@@ -10,8 +10,15 @@ import { ProjectsPage } from "@/pages/ProjectsPage";
 import { ResumePage } from "@/pages/ResumePage";
 import { WordlePage } from "@/pages/WordlePage";
 import { ConnectionsPage } from "@/pages/ConnectionsPage";
-import { courseworkTimeline, initialSkills, mockTracks } from "@shared/content";
-import type { BootstrapPayload, EducationSnapshot, GitHubSnapshot, MusicTrack, PresenceSnapshot, SkillState } from "@shared/types";
+import { courseworkTimeline, initialSkills, musicCatalog } from "@shared/content";
+import type {
+  BootstrapPayload,
+  EducationSnapshot,
+  GitHubSnapshot,
+  MusicSnapshot,
+  PresenceSnapshot,
+  SkillState,
+} from "@shared/types";
 
 const fallbackEducation: EducationSnapshot = {
   school: "Purdue University",
@@ -71,17 +78,29 @@ const fallbackPresence: PresenceSnapshot = {
   updatedAt: new Date().toISOString(),
 };
 
+const fallbackMusic: MusicSnapshot = {
+  lastPlayed: {
+    ...musicCatalog[0],
+    playedAt: new Date().toISOString(),
+  },
+  recentTracks: musicCatalog.slice(0, 5).map((track, index) => ({
+    ...track,
+    playedAt: new Date(Date.now() - index * 1000 * 60 * 4).toISOString(),
+  })),
+  recommendations: [],
+  updatedAt: new Date().toISOString(),
+};
+
 function App() {
   const location = useLocation();
   const [education, setEducation] = useState<EducationSnapshot>(fallbackEducation);
   const [github, setGithub] = useState<GitHubSnapshot>(fallbackGithub);
   const [presence, setPresence] = useState<PresenceSnapshot>(fallbackPresence);
+  const [music, setMusic] = useState<MusicSnapshot>(fallbackMusic);
   const [skills, setSkills] = useState<SkillState>({
     bubbles: initialSkills,
     updatedAt: new Date().toISOString(),
   });
-  const [queue] = useState<MusicTrack[]>(mockTracks);
-  const [currentTrack, setCurrentTrack] = useState<MusicTrack>(mockTracks[0]);
   const [navShrinkProgress, setNavShrinkProgress] = useState(0);
   const coursework = useMemo(() => courseworkTimeline, []);
 
@@ -92,15 +111,20 @@ function App() {
           setEducation(payload.education);
           setGithub(payload.github);
           setPresence(payload.presence);
+          setMusic(payload.music);
           setSkills(payload.skills);
-          const matched = mockTracks.find((track) => track.id === payload.currentTrack.id) ?? payload.currentTrack;
-          setCurrentTrack(matched);
         });
       })
       .catch(() => {
-        fetchSkillState()
-          .then((payload) => setSkills(payload))
-          .catch(() => undefined);
+        Promise.allSettled([fetchSkillState(), fetchMusic()]).then((results) => {
+          const [skillsResult, musicResult] = results;
+          if (skillsResult.status === "fulfilled") {
+            setSkills(skillsResult.value);
+          }
+          if (musicResult.status === "fulfilled") {
+            setMusic(musicResult.value);
+          }
+        });
       });
   }, []);
 
@@ -119,6 +143,20 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const refreshMusic = () => {
+      fetchMusic()
+        .then((payload) => {
+          startTransition(() => setMusic(payload));
+        })
+        .catch(() => undefined);
+    };
+
+    refreshMusic();
+    const interval = window.setInterval(refreshMusic, 20_000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const source = new EventSource("/stream/skills");
     const handler = (event: MessageEvent<string>) => {
       const payload = JSON.parse(event.data) as SkillState;
@@ -131,22 +169,6 @@ function App() {
       source.close();
     };
   }, []);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      setCurrentTrack((track) => {
-        if (!track.isPlaying) return track;
-        const nextProgress = track.progressMs + 1000;
-        if (nextProgress < track.durationMs) {
-          return { ...track, progressMs: nextProgress };
-        }
-        const currentIndex = queue.findIndex((item) => item.id === track.id);
-        const nextTrack = queue[(currentIndex + 1) % queue.length];
-        return { ...nextTrack, progressMs: 0, isPlaying: true };
-      });
-    }, 1000);
-    return () => window.clearInterval(interval);
-  }, [queue]);
 
   useEffect(() => {
     function updateSpotlight(event: PointerEvent) {
@@ -185,35 +207,21 @@ function App() {
     };
   }, []);
 
-  function handleQueueTrack(id: string) {
-    const track = queue.find((entry) => entry.id === id);
-    if (!track) return;
-    setCurrentTrack({
-      ...track,
-      progressMs: 0,
-      isPlaying: true,
-    });
-  }
-
-  function handleTogglePlayback() {
-    setCurrentTrack((track) => ({
-      ...track,
-      isPlaying: !track.isPlaying,
-    }));
-  }
-
   function handleGrowSkill(id: string) {
     growSkill(id).catch(() => undefined);
+  }
+
+  async function handleRecommendTrack(trackId: string, note: string) {
+    const next = await recommendMusic({ trackId, note });
+    startTransition(() => setMusic(next));
   }
 
   return (
     <div className="app-shell">
       <div className="app-backdrop" />
       <FloatingNav
-        currentTrack={currentTrack}
-        onQueueTrack={handleQueueTrack}
-        onTogglePlayback={handleTogglePlayback}
-        queue={queue}
+        music={music}
+        onRecommendTrack={handleRecommendTrack}
         shrinkProgress={navShrinkProgress}
       />
 

@@ -3,6 +3,9 @@ import type {
   ConnectionsGroup,
   GameConfig,
   GameCreateResult,
+  MusicRecommendationCreatePayload,
+  MusicSearchPayload,
+  MusicSnapshot,
   PresencePayload,
   SkillState,
 } from "@shared/types";
@@ -30,6 +33,21 @@ export function fetchBootstrap(): Promise<BootstrapPayload> {
 
 export function fetchPresence(): Promise<PresencePayload> {
   return request<PresencePayload>("/api/presence");
+}
+
+export function fetchMusic(): Promise<MusicSnapshot> {
+  return request<MusicSnapshot>("/api/music");
+}
+
+export function searchMusicCatalog(query: string): Promise<MusicSearchPayload> {
+  return request<MusicSearchPayload>(`/api/music/search?q=${encodeURIComponent(query)}`);
+}
+
+export function recommendMusic(payload: MusicRecommendationCreatePayload): Promise<MusicSnapshot> {
+  return request<MusicSnapshot>("/api/music/recommend", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
 
 export function fetchSkillState(): Promise<SkillState> {

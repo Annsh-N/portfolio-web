@@ -5,11 +5,11 @@ import type { GameConfig, SkillState } from "../../shared/types.js";
 import { getEducationSnapshot } from "./services/education.js";
 import { createConnectionsGame, createWordleGame, isExpired, summarizeGame } from "./services/games.js";
 import { getGitHubSnapshot } from "./services/github.js";
-import { getCurrentTrack } from "./services/music.js";
+import { createMusicRecommendation, getMusicSnapshot, searchMusicCatalog } from "./services/music.js";
 import { getPresencePayload, getPresenceSnapshot } from "./services/presence.js";
 import { growSkill, skillsEvents } from "./services/skills.js";
 import { readStore } from "./store.js";
-import { connectionsSchema, wordleSchema } from "./validation.js";
+import { connectionsSchema, musicRecommendationSchema, wordleSchema } from "./validation.js";
 
 const app = express();
 const cwd = process.cwd();
@@ -19,18 +19,18 @@ const clientDist = path.join(workspaceRoot, "client", "dist");
 app.use(express.json());
 
 app.get("/api/bootstrap", async (_req, res) => {
-  const [education, github, presence, track, store] = await Promise.all([
+  const [education, github, presence, music, store] = await Promise.all([
     getEducationSnapshot(),
     getGitHubSnapshot(),
     Promise.resolve(getPresenceSnapshot()),
-    Promise.resolve(getCurrentTrack()),
+    getMusicSnapshot(),
     readStore(),
   ]);
   res.json({
     education,
     github,
     presence,
-    currentTrack: track,
+    music,
     coursework: courseworkTimeline,
     skills: store.skills,
   });
@@ -46,8 +46,31 @@ app.get("/api/github", async (_req, res) => {
   res.json(github);
 });
 
-app.get("/api/music/current", (_req, res) => {
-  res.json(getCurrentTrack());
+app.get("/api/music", async (_req, res) => {
+  res.json(await getMusicSnapshot());
+});
+
+app.get("/api/music/search", (req, res) => {
+  const query = typeof req.query.q === "string" ? req.query.q : "";
+  res.json({
+    query,
+    results: searchMusicCatalog(query),
+  });
+});
+
+app.post("/api/music/recommend", async (req, res) => {
+  const parsed = musicRecommendationSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ message: parsed.error.issues[0]?.message ?? "Invalid payload." });
+    return;
+  }
+
+  try {
+    const snapshot = await createMusicRecommendation(parsed.data.trackId, parsed.data.note);
+    res.status(201).json(snapshot);
+  } catch (error) {
+    res.status(404).json({ message: error instanceof Error ? error.message : "Song not found." });
+  }
 });
 
 app.get("/api/presence", (_req, res) => {

@@ -315,30 +315,76 @@ export const initialSkills: SkillBubble[] = skillSeeds.map((seed) => {
   };
 });
 
-export const mockTracks: MusicTrack[] = [
+export const musicCatalog: MusicTrack[] = [
   {
     id: "track-1",
     title: "Granular Light",
     artist: "North Axis",
+    album: "Transit Glow",
     durationMs: 224000,
-    progressMs: 92000,
-    isPlaying: true,
   },
   {
     id: "track-2",
     title: "Signal Bloom",
     artist: "Paper Relay",
+    album: "Circuit Petals",
     durationMs: 207000,
-    progressMs: 0,
-    isPlaying: false,
   },
   {
     id: "track-3",
     title: "Static Harbor",
     artist: "Arc Manual",
+    album: "Harbor Codes",
     durationMs: 248000,
-    progressMs: 0,
-    isPlaying: false,
+  },
+  {
+    id: "track-4",
+    title: "Orbit for Two",
+    artist: "Cinder Vale",
+    album: "Low Earth Summer",
+    durationMs: 198000,
+  },
+  {
+    id: "track-5",
+    title: "Paper Satellites",
+    artist: "Luma Coast",
+    album: "Night Transit",
+    durationMs: 236000,
+  },
+  {
+    id: "track-6",
+    title: "Velvet Algorithms",
+    artist: "Blue Metric",
+    album: "Signal Hearts",
+    durationMs: 255000,
+  },
+  {
+    id: "track-7",
+    title: "Second Sunrise",
+    artist: "Hollow Metro",
+    album: "After Images",
+    durationMs: 213000,
+  },
+  {
+    id: "track-8",
+    title: "Midnight Compile",
+    artist: "Rare Leisure",
+    album: "Terminal Lights",
+    durationMs: 231000,
+  },
+  {
+    id: "track-9",
+    title: "Echoes in Indigo",
+    artist: "Atlas Run",
+    album: "Glass Weather",
+    durationMs: 244000,
+  },
+  {
+    id: "track-10",
+    title: "Soft Focus Run",
+    artist: "Neon Orchard",
+    album: "Open Windows",
+    durationMs: 205000,
   },
 ];
 
