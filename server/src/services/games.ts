@@ -9,6 +9,11 @@ import type {
 } from "../../../shared/types.js";
 
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const MAX_STORED_GAMES = 500;
+
+function retainRecentGames(games: GameConfig[], next: GameConfig): GameConfig[] {
+  return [...games.filter((entry) => !isExpired(entry)), next].slice(-MAX_STORED_GAMES);
+}
 
 function gamePath(game: GameConfig): string {
   return game.type === "wordle" ? `/play/wordle/${game.id}` : `/play/connections/${game.id}`;
@@ -45,7 +50,7 @@ export async function createWordleGame(answer: string): Promise<WordleGameConfig
 
   await writeStore((current) => ({
     ...current,
-    games: [...current.games.filter((entry) => !isExpired(entry)), game],
+    games: retainRecentGames(current.games, game),
   }));
 
   return game;
@@ -64,7 +69,7 @@ export async function createConnectionsGame(groups: ConnectionsGroup[]): Promise
 
   await writeStore((current) => ({
     ...current,
-    games: [...current.games.filter((entry) => !isExpired(entry)), game],
+    games: retainRecentGames(current.games, game),
   }));
 
   return game;

@@ -1,5 +1,4 @@
 import { Check, Copy } from "lucide-react";
-import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { ConnectionsGroup } from "@shared/types";
@@ -68,7 +67,7 @@ export function CreateConnectionsPage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="connections-nyt-page" initial={{ opacity: 0, y: 16 }}>
+    <div className="connections-nyt-page">
       <div className="connections-nyt-shell connections-maker-shell">
         <div className="connections-nyt-topbar">
           <Link className="connections-nyt-site-link" to="/">
@@ -166,6 +165,6 @@ export function CreateConnectionsPage() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import { AlertTriangle, ArrowLeft, RefreshCcw } from "lucide-react";
-import { motion } from "framer-motion";
 import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { WordleGameConfig } from "@shared/types";
@@ -46,11 +45,12 @@ export function WordlePage() {
   const [guesses, setGuesses] = useState<string[]>([]);
   const [statuses, setStatuses] = useState<TileState[][]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [showResultModal, setShowResultModal] = useState(false);
+  const [dismissedEndState, setDismissedEndState] = useState<"win" | "loss" | null>(null);
 
   const isSolved = !!config && guesses.includes(config.answer);
   const isComplete = isSolved || guesses.length >= 6;
   const endState = isSolved ? "win" : guesses.length >= 6 ? "loss" : null;
+  const showResultModal = endState !== null && dismissedEndState !== endState;
 
   useEffect(() => {
     fetchGame("wordle", id)
@@ -140,12 +140,6 @@ export function WordlePage() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  useEffect(() => {
-    if (endState) {
-      setShowResultModal(true);
-    }
-  }, [endState]);
-
   const keyStates = useMemo(() => {
     const priority: Record<KeyState, number> = {
       absent: 1,
@@ -195,7 +189,7 @@ export function WordlePage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="wordle-nyt-page" initial={{ opacity: 0, y: 16 }}>
+    <div className="wordle-nyt-page">
       <div className="wordle-nyt-shell">
         <header className="wordle-nyt-header">
           <Link className="wordle-nyt-site-link" to="/">
@@ -268,7 +262,7 @@ export function WordlePage() {
                 <Link className="wordle-result-link" to="/create/wordle">
                   Make your own
                 </Link>
-                <button className="wordle-result-dismiss" onClick={() => setShowResultModal(false)} type="button">
+                <button className="wordle-result-dismiss" onClick={() => setDismissedEndState(endState)} type="button">
                   Close
                 </button>
               </div>
@@ -276,6 +270,6 @@ export function WordlePage() {
           </div>
         ) : null}
       </div>
-    </motion.div>
+    </div>
   );
 }

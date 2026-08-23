@@ -1,5 +1,4 @@
 import { Check, Copy, RefreshCcw } from "lucide-react";
-import { motion } from "framer-motion";
 import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createWordle } from "@/lib/api";
@@ -17,7 +16,7 @@ type CreateResultState = {
   expiresAt: string;
 };
 
-const defaultWord = "ANNSH";
+const defaultWord = "TRACE";
 
 export function CreateWordlePage() {
   const [word, setWord] = useState("");
@@ -100,7 +99,7 @@ export function CreateWordlePage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="wordle-nyt-page" initial={{ opacity: 0, y: 16 }}>
+    <div className="wordle-nyt-page">
       <div className="wordle-nyt-shell wordle-maker-shell">
         <header className="wordle-nyt-header">
           <Link className="wordle-nyt-site-link" to="/">
@@ -172,6 +171,6 @@ export function CreateWordlePage() {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

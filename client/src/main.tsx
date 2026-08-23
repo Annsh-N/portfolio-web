@@ -1,4 +1,3 @@
-import "@fontsource-variable/sora/index.css";
 import "@fontsource-variable/work-sans/index.css";
 import "@fontsource/ibm-plex-mono/index.css";
 import "./index.css";

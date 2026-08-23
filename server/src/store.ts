@@ -1,80 +1,18 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { initialSkills } from "../../shared/content.js";
-import type { GameConfig, MusicRecommendation, SkillState } from "../../shared/types.js";
+import type { GameConfig } from "../../shared/types.js";
 
 type StoreShape = {
-  skills: SkillState;
   games: GameConfig[];
-  musicRecommendations: MusicRecommendation[];
 };
 
 const cwd = process.cwd();
 const serverRoot = path.basename(cwd) === "server" ? cwd : path.resolve(cwd, "server");
 const dataDir = path.join(serverRoot, "data");
 const storePath = path.join(dataDir, "store.json");
-const MAX_SKILL_SIZE_RATIO = 5;
-
-const seedStore: StoreShape = {
-  skills: {
-    bubbles: initialSkills,
-    updatedAt: new Date().toISOString(),
-  },
-  games: [],
-  musicRecommendations: [],
-};
+const seedStore: StoreShape = { games: [] };
 
 let writeChain = Promise.resolve();
-
-function normalizeSkillState(skills: SkillState | undefined): SkillState {
-  const persisted = new Map((skills?.bubbles ?? []).map((bubble) => [bubble.id, bubble]));
-
-  const bubbles = initialSkills.map((template) => {
-    const saved = persisted.get(template.id);
-    const canReuseSavedValues = typeof saved?.category === "string";
-    const size = canReuseSavedValues && typeof saved?.size === "number" ? saved.size : template.size;
-    const baseSize = canReuseSavedValues && typeof saved?.baseSize === "number" ? saved.baseSize : template.baseSize;
-    const weight = canReuseSavedValues && typeof saved?.weight === "number" ? saved.weight : template.weight;
-
-    return {
-      ...template,
-      size: Number(size.toFixed(3)),
-      baseSize: Number(baseSize.toFixed(3)),
-      weight: Number(weight.toFixed(3)),
-    };
-  });
-
-  const smallest = Math.max(0.001, Math.min(...bubbles.map((bubble) => bubble.size)));
-  const maxAllowed = smallest * MAX_SKILL_SIZE_RATIO;
-
-  return {
-    bubbles: bubbles.map((bubble) => ({
-      ...bubble,
-      size: Number(Math.min(Math.max(bubble.size, 0.001), maxAllowed).toFixed(3)),
-    })),
-    updatedAt: skills?.updatedAt ?? new Date().toISOString(),
-  };
-}
-
-function normalizeMusicRecommendations(recommendations: MusicRecommendation[] | undefined): MusicRecommendation[] {
-  if (!Array.isArray(recommendations)) {
-    return [];
-  }
-
-  return recommendations
-    .filter(
-      (entry) =>
-        typeof entry?.recommendationId === "string" &&
-        typeof entry?.id === "string" &&
-        typeof entry?.title === "string" &&
-        typeof entry?.artist === "string" &&
-        typeof entry?.album === "string" &&
-        typeof entry?.durationMs === "number" &&
-        typeof entry?.note === "string" &&
-        typeof entry?.requestedAt === "string",
-    )
-    .slice(0, 20);
-}
 
 async function ensureStore(): Promise<void> {
   await mkdir(dataDir, { recursive: true });
@@ -88,11 +26,9 @@ async function ensureStore(): Promise<void> {
 export async function readStore(): Promise<StoreShape> {
   await ensureStore();
   const raw = await readFile(storePath, "utf8");
-  const parsed = JSON.parse(raw) as StoreShape;
+  const parsed = JSON.parse(raw) as Partial<StoreShape>;
   return {
-    skills: normalizeSkillState(parsed.skills),
     games: Array.isArray(parsed.games) ? parsed.games : [],
-    musicRecommendations: normalizeMusicRecommendations(parsed.musicRecommendations),
   };
 }
 

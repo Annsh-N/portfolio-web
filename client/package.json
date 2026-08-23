@@ -11,11 +11,8 @@
     "check": "tsc -b --pretty false"
   },
   "dependencies": {
-    "@fontsource-variable/sora": "^5.2.8",
     "@fontsource-variable/work-sans": "^5.2.6",
     "@fontsource/ibm-plex-mono": "^5.2.7",
-    "clsx": "^2.1.1",
-    "framer-motion": "^12.23.24",
     "lucide-react": "^0.554.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

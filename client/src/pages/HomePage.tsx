@@ -1,216 +1,113 @@
-import { Activity, ArrowUpRight, Atom, CloudSun, FileText, FolderKanban, GraduationCap, MapPin, MessageSquareMore, MoveRight, RefreshCcw } from "lucide-react";
-import { motion } from "framer-motion";
-import { experiences, profile } from "@shared/content";
-import type { EducationSnapshot, GitHubSnapshot, PresenceSnapshot, SemesterCourseNode, SkillState } from "@shared/types";
-import { CourseworkGraph } from "@/components/CourseworkGraph";
-import { GitHubPulsePanel } from "@/components/GitHubPulsePanel";
-import { HeroPresenceCard } from "@/components/HeroPresenceCard";
-import { SectionHeading } from "@/components/SectionHeading";
-import { SkillField } from "@/components/SkillField";
-import { formatTimeInZone } from "@/lib/format";
 import { Link } from "react-router-dom";
+import { experiences, notes, profile, projects } from "@/content/siteContent";
 
-type HomePageProps = {
-  education: EducationSnapshot;
-  github: GitHubSnapshot;
-  presence: PresenceSnapshot;
-  coursework: SemesterCourseNode[];
-  skills: SkillState;
-  onGrowSkill: (id: string) => void;
-};
-
-export function HomePage({ education, github, presence, coursework, skills, onGrowSkill }: HomePageProps) {
-  const now = new Date();
-  const timeLabel = formatTimeInZone(now, education.timezone);
-  const graduationDate = new Date("2027-05-15T00:00:00-04:00");
-  const graduationDaysAway = Math.max(0, Math.ceil((graduationDate.getTime() - now.getTime()) / 86_400_000));
-
+export function HomePage() {
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="page-shell" initial={{ opacity: 0, y: 24 }} transition={{ duration: 0.55 }}>
-      <section className="hero-grid">
-        <motion.div className="hero-copy panel hero-panel" initial={{ opacity: 0, y: 24 }} transition={{ delay: 0.05 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <div className="hero-copy-main">
-            <span className="eyebrow">Backend-first, interaction-aware</span>
-            <h1>{profile.name}</h1>
-            <p className="hero-summary">{profile.heroSummary}</p>
-            <p className="hero-detail">{profile.heroDetail}</p>
-          </div>
-
-          <div className="hero-utility-stack">
-            <HeroPresenceCard presence={presence} />
-
-            <div className="hero-actions">
-              <Link className="primary-button" to="/resume">
-                Resume
-                <FileText size={16} />
-              </Link>
-              <Link className="secondary-button" to="/projects">
-                Projects
-                <FolderKanban size={16} />
-              </Link>
-              <Link className="secondary-button" to="/message-me">
-                Message Me
-                <MessageSquareMore size={16} />
-              </Link>
-            </div>
-
-            <div className="hero-links-row">
-              <a className="tertiary-link" href={profile.linkedinUrl} rel="noreferrer" target="_blank">
-                LinkedIn
-                <ArrowUpRight size={16} />
-              </a>
-              <a className="tertiary-link" href={profile.githubUrl} rel="noreferrer" target="_blank">
-                GitHub
-                <ArrowUpRight size={16} />
-              </a>
-              <Link className="hero-feature-link" to="/create">
-                <span>Custom Games</span>
-                <MoveRight size={16} />
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div className="panel portrait-panel" initial={{ opacity: 0, scale: 0.96 }} transition={{ delay: 0.1 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-          <div className="portrait-frame">
-            <img alt="Annsh Navle portrait" src="/profile.jpg" />
-          </div>
-          <GitHubPulsePanel snapshot={github} />
-        </motion.div>
-      </section>
-
-      <section className="page-section" id="education">
-        <SectionHeading
-          description="Live Purdue context and a replayable map of how the coursework builds."
-          title="Education"
-        />
-
-        <div className="education-grid">
-          <div className="education-stack">
-            <article className="panel location-panel">
-              <div className="location-panel-header">
-                <div>
-                  <span className="eyebrow">University</span>
-                  <h3>{education.school}</h3>
-                  <p className="location-degree-line">B.S. in Computer Science and Physics</p>
-                </div>
-                <GraduationCap size={24} />
-              </div>
-
-              <div className="location-campus">
-                <MapPin size={15} />
-                <span>{education.cityLabel}</span>
-              </div>
-
-              <div className="location-highlights">
-                <div className="location-weather location-highlight-card">
-                  <div className="location-weather-icon">
-                    <CloudSun size={22} />
-                  </div>
-                  <div className="location-weather-copy">
-                    <small>Current conditions</small>
-                    <strong>
-                      {education.weather.temperatureF}
-                      {"°F"}
-                    </strong>
-                    <span>{education.weather.condition}</span>
-                  </div>
-                </div>
-
-                <div className="location-air location-highlight-card">
-                  <div className="location-air-icon">
-                    <Activity size={20} />
-                  </div>
-                  <div className="location-weather-copy">
-                    <small>Live AQI</small>
-                    <strong>{education.aqi.value}</strong>
-                    <span>{education.aqi.category}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="location-meta-list">
-                <div className="location-meta-item">
-                  <RefreshCcw size={15} />
-                  <div>
-                    <small>Local time</small>
-                    <strong>{timeLabel}</strong>
-                  </div>
-                </div>
-                <div className="location-meta-item">
-                  <GraduationCap size={15} />
-                  <div>
-                    <small>Graduation</small>
-                    <strong className="location-meta-inline">
-                      <span>{profile.graduation}</span>
-                      <span aria-hidden="true" className="location-meta-separator" />
-                      <span>{graduationDaysAway} days away</span>
-                    </strong>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <article className="panel physics-panel">
-              <div className="physics-panel-header">
-                <div>
-                  <span className="eyebrow">Physics degree</span>
-                  <h3>Learning the deeper machinery behind computation</h3>
-                </div>
-                <Atom size={24} />
-              </div>
-
-              <p className="physics-copy">
-                I&apos;m double-majoring in physics because I like understanding how the universe works from the ground up.
-                I&apos;m especially interested in quantum mechanics and where its ideas start to overlap with
-                computing, information, and complex technical systems.
-              </p>
-            </article>
-          </div>
-
-          <article className="panel graph-panel">
-            <CourseworkGraph nodes={coursework} />
-          </article>
+    <div className="notebook-page home-page">
+      <section className="home-intro" aria-labelledby="home-title">
+        <p className="kicker">purdue cs + physics · west lafayette, indiana</p>
+        <h1 id="home-title">{profile.name}</h1>
+        <p className="home-lede">{profile.introduction}</p>
+        <div className="inline-links" aria-label="Profile links">
+          <a href={profile.github} rel="noreferrer" target="_blank">
+            github ↗
+          </a>
+          <a href={profile.linkedin} rel="noreferrer" target="_blank">
+            linkedin ↗
+          </a>
+          <a href={`mailto:${profile.email}`}>email ↗</a>
         </div>
       </section>
 
-      <section className="page-section" id="experience">
-        <SectionHeading
-          description="Internship, leadership, and research work across backend, product, and applied systems."
-          title="Experience"
-        />
+      <div className="rule" />
 
-        <div className="experience-grid">
-          {experiences.map((item) => (
-            <article className="panel experience-card" key={`${item.company}-${item.role}`}>
-              <div className="experience-topline">
-                <span className={`pill pill-${item.kind}`}>{item.kind}</span>
-                <small>{item.dateRange}</small>
-              </div>
-              <h3>{item.role}</h3>
-              <p className="experience-meta">
-                {item.company} · {item.location}
-              </p>
-              <ul>
-                {item.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
+      <section className="notebook-section about-section" aria-labelledby="about-heading">
+        <div className="section-index">00 / about</div>
+        <div className="section-body">
+          <h2 id="about-heading">I like building things from first principles.</h2>
+          <p>{profile.about}</p>
+          <p className="current-line">
+            Currently building Listen Config, a low-latency control plane for real-time voice agents.
+          </p>
         </div>
       </section>
 
-      <section className="page-section" id="skills">
-        <SectionHeading
-          description="Click on a Skill to endorse it (make it bigger) for others to see."
-          title="Skills"
-        />
+      <section className="notebook-section" aria-labelledby="featured-heading">
+        <div className="section-index">01 / projects</div>
+        <div className="section-body">
+          <div className="section-title-row">
+            <h2 id="featured-heading">A few things I have been building</h2>
+            <Link className="text-link" to="/projects">
+              all projects →
+            </Link>
+          </div>
 
-        <article className="panel skill-field-panel">
-          <SkillField onGrow={onGrowSkill} state={skills} />
-        </article>
+          <div className="featured-projects">
+            {projects.slice(0, 3).map((project, index) => (
+              <Link className="featured-project" key={project.slug} to={`/projects/${project.slug}`}>
+                <span className="project-number">0{index + 1}</span>
+                <div>
+                  <h3>{project.name}</h3>
+                  <p>{project.descriptor}</p>
+                  <small>{project.languages.join(" · ")}</small>
+                </div>
+                <span className="project-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
-    </motion.div>
+
+      <section className="notebook-section" aria-labelledby="experience-heading">
+        <div className="section-index">02 / experience</div>
+        <div className="section-body">
+          <h2 id="experience-heading">Places where I learned by shipping</h2>
+          <div className="experience-list">
+            {experiences.map((experience) => (
+              <article className="experience-row" key={experience.organization}>
+                <div className="experience-meta">
+                  <h3>{experience.organization}</h3>
+                  <p>{experience.role}</p>
+                  <small>{experience.period}</small>
+                </div>
+                <p>{experience.note}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="notebook-section" aria-labelledby="articles-heading">
+        <div className="section-index">03 / articles</div>
+        <div className="section-body">
+          <div className="section-title-row">
+            <h2 id="articles-heading">Things I have written after building</h2>
+            <Link className="text-link" to="/writing">
+              all articles →
+            </Link>
+          </div>
+          <div className="note-preview-list">
+            {notes.slice(0, 2).map((note) => (
+              <Link className="note-preview" key={note.slug} to={`/writing/${note.slug}`}>
+                <div>
+                  <time>{note.date}</time>
+                  <span>{note.readTime}</span>
+                </div>
+                <h3>{note.title}</h3>
+                <p>{note.summary}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="home-signoff">
+        <p>
+          In my free time, I like to make some <Link to="/play">fun projects</Link> too.
+        </p>
+      </section>
+    </div>
   );
 }

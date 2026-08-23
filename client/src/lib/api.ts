@@ -1,13 +1,8 @@
 import type {
-  BootstrapPayload,
   ConnectionsGroup,
   GameConfig,
   GameCreateResult,
-  MusicRecommendationCreatePayload,
-  MusicSearchPayload,
-  MusicSnapshot,
-  PresencePayload,
-  SkillState,
+  KalshiPublicSnapshot,
 } from "@shared/types";
 
 async function request<T>(input: string, init?: RequestInit): Promise<T> {
@@ -27,40 +22,6 @@ async function request<T>(input: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
-export function fetchBootstrap(): Promise<BootstrapPayload> {
-  return request<BootstrapPayload>("/api/bootstrap");
-}
-
-export function fetchPresence(): Promise<PresencePayload> {
-  return request<PresencePayload>("/api/presence");
-}
-
-export function fetchMusic(): Promise<MusicSnapshot> {
-  return request<MusicSnapshot>("/api/music");
-}
-
-export function searchMusicCatalog(query: string): Promise<MusicSearchPayload> {
-  return request<MusicSearchPayload>(`/api/music/search?q=${encodeURIComponent(query)}`);
-}
-
-export function recommendMusic(payload: MusicRecommendationCreatePayload): Promise<MusicSnapshot> {
-  return request<MusicSnapshot>("/api/music/recommend", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  });
-}
-
-export function fetchSkillState(): Promise<SkillState> {
-  return request<SkillState>("/api/skills");
-}
-
-export function growSkill(id: string): Promise<SkillState> {
-  return request<SkillState>("/api/skills/grow", {
-    method: "POST",
-    body: JSON.stringify({ id }),
-  });
-}
-
 export function createWordle(answer: string): Promise<GameCreateResult> {
   return request<GameCreateResult>("/api/games/wordle", {
     method: "POST",
@@ -77,4 +38,8 @@ export function createConnections(groups: ConnectionsGroup[]): Promise<GameCreat
 
 export function fetchGame(type: "wordle" | "connections", id: string): Promise<GameConfig> {
   return request<GameConfig>(`/api/games/${type}/${id}`);
+}
+
+export function fetchKalshiPublicSnapshot(): Promise<KalshiPublicSnapshot> {
+  return request<KalshiPublicSnapshot>("/api/kalshi/public");
 }

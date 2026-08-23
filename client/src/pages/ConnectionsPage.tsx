@@ -1,5 +1,4 @@
 import { AlertTriangle, ArrowLeft, RefreshCcw } from "lucide-react";
-import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { ConnectionsGameConfig, ConnectionsGroup } from "@shared/types";
@@ -32,9 +31,10 @@ export function ConnectionsPage() {
   const [message, setMessage] = useState("Create four groups of four.");
   const [error, setError] = useState<string | null>(null);
   const [shakingWords, setShakingWords] = useState<string[]>([]);
-  const [showResultModal, setShowResultModal] = useState(false);
+  const [dismissedEndState, setDismissedEndState] = useState<"win" | "loss" | null>(null);
 
   const endState = solved.length === 4 ? "win" : mistakes === 0 ? "loss" : null;
+  const showResultModal = endState !== null && dismissedEndState !== endState;
 
   useEffect(() => {
     fetchGame("connections", id)
@@ -45,12 +45,6 @@ export function ConnectionsPage() {
       })
       .catch((caught) => setError(caught instanceof Error ? caught.message : "Unable to load this game."));
   }, [id]);
-
-  useEffect(() => {
-    if (endState) {
-      setShowResultModal(true);
-    }
-  }, [endState]);
 
   const remaining = useMemo(() => pool.filter((word) => !solved.some((group) => group.words.includes(word))), [pool, solved]);
 
@@ -114,7 +108,7 @@ export function ConnectionsPage() {
   }
 
   return (
-    <motion.div animate={{ opacity: 1, y: 0 }} className="connections-nyt-page" initial={{ opacity: 0, y: 16 }}>
+    <div className="connections-nyt-page">
       <div className="connections-nyt-shell">
         <div className="connections-nyt-topbar">
           <Link className="connections-nyt-site-link" to="/">
@@ -190,7 +184,7 @@ export function ConnectionsPage() {
                 </Link>
                 <button
                   className="connections-result-dismiss"
-                  onClick={() => setShowResultModal(false)}
+                  onClick={() => setDismissedEndState(endState)}
                   type="button"
                 >
                   Close
@@ -200,6 +194,6 @@ export function ConnectionsPage() {
           </div>
         ) : null}
       </div>
-    </motion.div>
+    </div>
   );
 }
