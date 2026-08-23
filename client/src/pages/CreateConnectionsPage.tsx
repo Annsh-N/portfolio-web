@@ -25,7 +25,10 @@ export function CreateConnectionsPage() {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = useMemo(
-    () => (typeof window === "undefined" || !result ? "" : `${window.location.origin}${result.path}`),
+    () =>
+      typeof window === "undefined" || !result
+        ? ""
+        : `${window.location.origin}${import.meta.env.BASE_URL}${result.path.replace(/^\//, "")}`,
     [result],
   );
 

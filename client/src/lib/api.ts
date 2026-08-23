@@ -5,6 +5,8 @@ import type {
   KalshiPublicSnapshot,
 } from "@shared/types";
 
+const apiBase = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 async function request<T>(input: string, init?: RequestInit): Promise<T> {
   const response = await fetch(input, {
     headers: {
@@ -23,23 +25,23 @@ async function request<T>(input: string, init?: RequestInit): Promise<T> {
 }
 
 export function createWordle(answer: string): Promise<GameCreateResult> {
-  return request<GameCreateResult>("/api/games/wordle", {
+  return request<GameCreateResult>(`${apiBase}/api/games/wordle`, {
     method: "POST",
     body: JSON.stringify({ answer }),
   });
 }
 
 export function createConnections(groups: ConnectionsGroup[]): Promise<GameCreateResult> {
-  return request<GameCreateResult>("/api/games/connections", {
+  return request<GameCreateResult>(`${apiBase}/api/games/connections`, {
     method: "POST",
     body: JSON.stringify({ groups }),
   });
 }
 
 export function fetchGame(type: "wordle" | "connections", id: string): Promise<GameConfig> {
-  return request<GameConfig>(`/api/games/${type}/${id}`);
+  return request<GameConfig>(`${apiBase}/api/games/${type}/${id}`);
 }
 
 export function fetchKalshiPublicSnapshot(): Promise<KalshiPublicSnapshot> {
-  return request<KalshiPublicSnapshot>("/api/kalshi/public");
+  return request<KalshiPublicSnapshot>(`${apiBase}/api/kalshi/public`);
 }
