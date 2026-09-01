@@ -6,7 +6,7 @@ export function WritingPage() {
     <div className="notebook-page">
       <header className="page-header">
         <p className="kicker">article archive / built, measured, written down</p>
-        <h1>Articles</h1>
+        <h1>notes and articles</h1>
         <p>
           Things I write after building or measuring something. The goal is to make the useful detail visible, not
           to pretend a project taught me more than it did.

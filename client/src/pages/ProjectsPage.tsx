@@ -6,7 +6,7 @@ export function ProjectsPage() {
     <div className="notebook-page">
       <header className="page-header">
         <p className="kicker">project index / source, decisions, measurements</p>
-        <h1>Projects</h1>
+        <h1>projects</h1>
         <p>
           I learn best by building. Each write-up follows what drew me to the idea, the decisions I made along the
           way, and the evidence I have so far.

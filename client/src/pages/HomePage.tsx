@@ -4,35 +4,34 @@ import { experiences, notes, profile, projects } from "@/content/siteContent";
 export function HomePage() {
   return (
     <div className="notebook-page home-page">
-      <section className="home-intro" aria-labelledby="home-title">
-        <p className="kicker">purdue cs + physics · west lafayette, indiana</p>
-        <h1 id="home-title">{profile.name}</h1>
-        <p className="home-lede">{profile.introduction}</p>
-        <div className="inline-links" aria-label="Profile links">
-          <a href={profile.github} rel="noreferrer" target="_blank">
-            github ↗
-          </a>
-          <a href={profile.linkedin} rel="noreferrer" target="_blank">
-            linkedin ↗
-          </a>
-          <a href={`mailto:${profile.email}`}>email ↗</a>
-        </div>
-      </section>
-
-      <section className="notebook-section about-section" aria-labelledby="about-heading">
-        <div className="section-body">
-          <h2 id="about-heading">I like building things from first principles.</h2>
-          <p>{profile.about}</p>
+      <div className="home-hero">
+        <section className="home-intro" aria-labelledby="home-title">
+          <h1 id="home-title">{profile.name}</h1>
+          <p className="home-lede">{profile.introduction}</p>
           <p className="current-line">
             Currently building Listen Config, a low-latency control plane for real-time voice agents.
           </p>
-        </div>
-      </section>
+          <div className="inline-links" aria-label="Profile links">
+            <a href={profile.github} rel="noreferrer" target="_blank">
+              github ↗
+            </a>
+            <a href={profile.linkedin} rel="noreferrer" target="_blank">
+              linkedin ↗
+            </a>
+            <a href={`mailto:${profile.email}`}>email ↗</a>
+          </div>
+        </section>
+
+        <aside className="about-scroll" aria-labelledby="about-heading">
+          <h2 id="about-heading">more about me</h2>
+          <p>{profile.about}</p>
+        </aside>
+      </div>
 
       <section className="notebook-section" aria-labelledby="featured-heading">
         <div className="section-body">
           <div className="section-title-row">
-            <h2 id="featured-heading">A few things I have been building</h2>
+            <h2 id="featured-heading">projects</h2>
             <Link className="text-link" to="/projects">
               all projects →
             </Link>
@@ -57,9 +56,14 @@ export function HomePage() {
 
       <section className="notebook-section" aria-labelledby="experience-heading">
         <div className="section-body">
-          <h2 id="experience-heading">Places where I learned by shipping</h2>
+          <div className="section-title-row">
+            <h2 id="experience-heading">last summer</h2>
+            <Link className="text-link" to="/experience">
+              all experience →
+            </Link>
+          </div>
           <div className="experience-list">
-            {experiences.map((experience) => (
+            {experiences.slice(0, 1).map((experience) => (
               <article className="experience-row" key={experience.organization}>
                 <div className="experience-meta">
                   <h3>{experience.organization}</h3>
@@ -76,9 +80,9 @@ export function HomePage() {
       <section className="notebook-section" aria-labelledby="articles-heading">
         <div className="section-body">
           <div className="section-title-row">
-            <h2 id="articles-heading">Things I have written after building</h2>
+            <h2 id="articles-heading">notes and articles</h2>
             <Link className="text-link" to="/writing">
-              all articles →
+              all notes and articles →
             </Link>
           </div>
           <div className="note-preview-list">

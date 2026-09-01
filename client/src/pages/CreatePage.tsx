@@ -5,7 +5,7 @@ export function CreatePage() {
     <div className="notebook-page play-page">
       <header className="page-header">
         <p className="kicker">small tools / made mostly for the delight of it</p>
-        <h1>Play</h1>
+        <h1>play</h1>
         <p>
           Not every program needs to justify itself with scale. These are compact, shareable experiments that live
           beside the more serious work.

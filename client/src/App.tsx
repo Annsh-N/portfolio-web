@@ -4,6 +4,7 @@ import { ConnectionsPage } from "@/pages/ConnectionsPage";
 import { CreateConnectionsPage } from "@/pages/CreateConnectionsPage";
 import { CreatePage } from "@/pages/CreatePage";
 import { CreateWordlePage } from "@/pages/CreateWordlePage";
+import { ExperiencePage } from "@/pages/ExperiencePage";
 import { HomePage } from "@/pages/HomePage";
 import { KalshiDashboardPage } from "@/pages/KalshiDashboardPage";
 import { NotePage } from "@/pages/NotePage";
@@ -23,6 +24,7 @@ function App() {
         <Route element={<WritingPage />} path="writing" />
         <Route element={<NotePage />} path="writing/:slug" />
         <Route element={<CreatePage />} path="play" />
+        <Route element={<ExperiencePage />} path="experience" />
         <Route element={<KalshiDashboardPage />} path="lab/kalshi" />
         <Route element={<NotFoundPage />} path="*" />
       </Route>

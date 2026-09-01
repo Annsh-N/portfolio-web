@@ -33,9 +33,9 @@ export const profile = {
   github: "https://github.com/Annsh-N",
   linkedin: "https://linkedin.com/in/annsh-navle",
   introduction:
-    "I study computer science and physics at Purdue. I like building things, understanding how they work, and taking ideas from a blank file to something real.",
+    "I like building things, understanding how they work, and taking ideas from a blank file to something real.",
   about:
-    "I like building from first principles. This website, for example, is served from my personal VPS through an HTTP/1.1 server I wrote in C++ instead of a managed Vercel deploy. I enjoy learning the whole path from an idea to the code that runs it.",
+    "I study computer science and physics at Purdue, and I like building from first principles: taking an idea from a blank file to code that actually runs. I have worked on query diagnostics at AWS, enterprise banking software, financial integrations, and research tooling. I enjoy the whole path—protocols, backends, infrastructure, and the small fun projects that keep me curious.",
 };
 
 export const experiences = [
