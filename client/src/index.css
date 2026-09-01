@@ -275,7 +275,7 @@ a {
 }
 
 .about-scroll {
-  max-height: 23rem;
+  height: 15rem;
   overflow-y: auto;
   padding: 22px 24px 24px;
   border: 1px solid var(--rule);
@@ -1663,7 +1663,7 @@ a {
   }
 
   .about-scroll {
-    max-height: 18rem;
+    height: 15rem;
   }
 
   .section-index {
