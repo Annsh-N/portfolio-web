@@ -267,9 +267,9 @@ a {
 .home-hero {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  align-items: end;
-  gap: clamp(40px, 7vw, 88px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(48px, 7vw, 80px);
   padding-bottom: clamp(48px, 7vw, 72px);
 }
 
@@ -284,6 +284,10 @@ a {
 
 .home-intro {
   max-width: 910px;
+  min-height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .about-scroll {
@@ -292,14 +296,6 @@ a {
   padding: 22px 24px 24px;
   border: 1px solid var(--rule);
   scrollbar-color: var(--rule) transparent;
-}
-
-.about-scroll h2 {
-  margin: 0 0 16px;
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  text-transform: lowercase;
 }
 
 .about-scroll p {
@@ -320,28 +316,28 @@ a {
 }
 
 .hosting-section {
-  padding: 30px 0 36px;
+  padding: 24px 0 30px;
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
+  text-align: center;
 }
 
 .hosting-section > div {
-  display: grid;
-  grid-template-columns: 140px minmax(280px, 0.9fr) minmax(300px, 1.1fr);
-  align-items: baseline;
-  gap: 32px;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .hosting-label {
-  margin: 0;
+  margin: 0 0 10px;
   color: var(--accent);
   font-family: "IBM Plex Mono", monospace;
-  font-size: 0.76rem;
+  font-size: 0.66rem;
 }
 
 .hosting-section h2 {
-  margin: 0;
-  font-size: clamp(1.45rem, 2.8vw, 2.25rem);
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: clamp(1.35rem, 2.3vw, 1.9rem);
   font-weight: 520;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -349,18 +345,16 @@ a {
 }
 
 .hosting-section > div > p:last-child {
-  margin: 0;
+  max-width: 620px;
+  margin: 14px auto 0;
   color: var(--ink-soft);
   font-size: 1rem;
   line-height: 1.7;
 }
 
 .hosting-section a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 5px;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 .hosting-section a:hover {
@@ -1722,17 +1716,16 @@ a {
     padding-bottom: 48px;
   }
 
+  .home-intro {
+    min-height: auto;
+  }
+
   .home-opening {
     min-height: calc(100svh - 128px);
   }
 
-  .hosting-section > div {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
   .hosting-section > div > p:last-child {
-    margin-top: 4px;
+    margin-top: 12px;
   }
 
   .about-scroll {

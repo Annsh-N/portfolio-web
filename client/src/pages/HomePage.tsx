@@ -19,8 +19,7 @@ export function HomePage() {
             </div>
           </section>
 
-          <aside className="about-scroll" aria-labelledby="about-heading">
-            <h2 id="about-heading">more about me</h2>
+          <aside className="about-scroll" aria-label="About Annsh">
             {profile.about.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
