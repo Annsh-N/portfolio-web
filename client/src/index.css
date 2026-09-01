@@ -1,7 +1,7 @@
 :root {
-  --paper: #f3f0e8;
-  --paper-deep: #e9e4d8;
-  --paper-light: #faf8f2;
+  --paper: #f7f7f5;
+  --paper-deep: #eeeeeb;
+  --paper-light: #ffffff;
   --ink: #20231f;
   --ink-soft: #595e57;
   --rule: #b8b2a5;
@@ -47,9 +47,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    linear-gradient(90deg, transparent 0, transparent calc(50% - 0.5px), rgba(32, 35, 31, 0.025) 50%, transparent calc(50% + 0.5px)),
-    var(--paper);
+  background: var(--paper);
   color: var(--ink);
 }
 
@@ -252,16 +250,21 @@ a {
 }
 
 .home-page {
-  padding-top: 104px;
+  padding-top: 96px;
+}
+
+.home-page .notebook-section {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
 }
 
 .kicker {
   margin: 0 0 18px;
-  color: var(--accent);
-  font-size: 0.73rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 520;
+  letter-spacing: -0.01em;
+  text-transform: none;
 }
 
 .home-intro {
@@ -274,10 +277,10 @@ a {
 .article-essay header h1,
 .empty-page h1 {
   margin: 0;
-  font-size: clamp(3.5rem, 9vw, 7.8rem);
+  font-size: clamp(3.4rem, 8vw, 6rem);
   font-weight: 520;
-  line-height: 0.9;
-  letter-spacing: -0.075em;
+  line-height: 0.96;
+  letter-spacing: -0.032em;
 }
 
 .home-lede {
@@ -370,15 +373,15 @@ a {
 
 .featured-project {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 24px;
+  grid-template-columns: minmax(0, 1fr) 24px;
   gap: 24px;
   padding: 24px 4px;
   border-bottom: 1px solid var(--rule-light);
-  transition: padding 150ms ease, color 150ms ease;
+  transition: color 150ms ease, transform 150ms ease;
 }
 
 .featured-project:hover {
-  padding-left: 12px;
+  transform: translateX(6px);
   color: var(--accent);
 }
 

@@ -19,10 +19,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <div className="rule" />
-
       <section className="notebook-section about-section" aria-labelledby="about-heading">
-        <div className="section-index">00 / about</div>
         <div className="section-body">
           <h2 id="about-heading">I like building things from first principles.</h2>
           <p>{profile.about}</p>
@@ -33,7 +30,6 @@ export function HomePage() {
       </section>
 
       <section className="notebook-section" aria-labelledby="featured-heading">
-        <div className="section-index">01 / projects</div>
         <div className="section-body">
           <div className="section-title-row">
             <h2 id="featured-heading">A few things I have been building</h2>
@@ -43,9 +39,8 @@ export function HomePage() {
           </div>
 
           <div className="featured-projects">
-            {projects.slice(0, 3).map((project, index) => (
+            {projects.slice(0, 3).map((project) => (
               <Link className="featured-project" key={project.slug} to={`/projects/${project.slug}`}>
-                <span className="project-number">0{index + 1}</span>
                 <div>
                   <h3>{project.name}</h3>
                   <p>{project.descriptor}</p>
@@ -61,7 +56,6 @@ export function HomePage() {
       </section>
 
       <section className="notebook-section" aria-labelledby="experience-heading">
-        <div className="section-index">02 / experience</div>
         <div className="section-body">
           <h2 id="experience-heading">Places where I learned by shipping</h2>
           <div className="experience-list">
@@ -80,7 +74,6 @@ export function HomePage() {
       </section>
 
       <section className="notebook-section" aria-labelledby="articles-heading">
-        <div className="section-index">03 / articles</div>
         <div className="section-body">
           <div className="section-title-row">
             <h2 id="articles-heading">Things I have written after building</h2>
