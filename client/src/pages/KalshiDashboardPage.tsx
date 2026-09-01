@@ -56,8 +56,8 @@ export function KalshiDashboardPage() {
 
   return (
     <div className="notebook-page telemetry-page">
-      <Link className="back-link" to="/play">
-        ← play / lab
+      <Link className="back-link" to="/fun">
+        ← fun / lab
       </Link>
 
       <header className="page-header telemetry-header">

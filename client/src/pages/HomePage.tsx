@@ -20,13 +20,22 @@ export function HomePage() {
 
         <aside className="about-scroll" aria-labelledby="about-heading">
           <h2 id="about-heading">more about me</h2>
-          <p>{profile.introduction}</p>
-          <p>{profile.about}</p>
-          <p className="current-line">
-            Currently building Listen Config, a low-latency control plane for real-time voice agents.
-          </p>
+          {profile.about.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </aside>
       </div>
+
+      <section className="hosting-section" aria-labelledby="hosting-heading">
+        <div>
+          <p className="hosting-label">fun fact</p>
+          <h2 id="hosting-heading">this website is served from my own http server.</h2>
+          <p>
+            It runs on a personal VPS that also hosts <Link to="/projects">other projects</Link> and{" "}
+            <Link to="/fun">fun things</Link> I make along the way.
+          </p>
+        </div>
+      </section>
 
       <section className="notebook-section" aria-labelledby="featured-heading">
         <div className="section-body">
@@ -100,11 +109,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="home-signoff">
-        <p>
-          In my free time, I like to make some <Link to="/play">fun projects</Link> too.
-        </p>
-      </section>
     </div>
   );
 }

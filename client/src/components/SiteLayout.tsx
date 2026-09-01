@@ -6,7 +6,7 @@ const navigation = [
   { to: "/", label: "home", end: true },
   { to: "/projects", label: "projects" },
   { to: "/writing", label: "articles" },
-  { to: "/play", label: "play" },
+  { to: "/fun", label: "fun" },
 ];
 
 type Theme = "light" | "dark";

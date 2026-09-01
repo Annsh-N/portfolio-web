@@ -16,7 +16,7 @@ function retainRecentGames(games: GameConfig[], next: GameConfig): GameConfig[] 
 }
 
 function gamePath(game: GameConfig): string {
-  return game.type === "wordle" ? `/play/wordle/${game.id}` : `/play/connections/${game.id}`;
+  return game.type === "wordle" ? `/fun/wordle/${game.id}` : `/fun/connections/${game.id}`;
 }
 
 export function summarizeGame(game: GameConfig): GameSummary {

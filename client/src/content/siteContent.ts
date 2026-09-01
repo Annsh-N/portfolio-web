@@ -34,8 +34,12 @@ export const profile = {
   linkedin: "https://linkedin.com/in/annsh-navle",
   introduction:
     "I like building things, understanding how they work, and taking ideas from a blank file to something real.",
-  about:
-    "I study computer science and physics at Purdue, and I like building from first principles: taking an idea from a blank file to code that actually runs. I have worked on query diagnostics at AWS, enterprise banking software, financial integrations, and research tooling. I enjoy the whole path—protocols, backends, infrastructure, and the small fun projects that keep me curious.",
+  about: [
+    "Hello! I am Annsh Navle, based in West Lafayette, Indiana. I am currently a student at Purdue University, studying computer science and physics.",
+    "Through my internships, I have worked on query and session diagnostics at AWS, enterprise banking software at Mindcraft, and backend APIs for financial integrations at Indepay. Those roles taught me to trace behavior across real codebases, understand the boundaries between services, and build tooling that makes failures easier to investigate.",
+    "I have also worked on research tooling for chemical reactivity and built projects including a C++ HTTP/1.1 server, a low-latency configuration engine for voice agents, a Go build orchestrator, PromptGate, and a dashboard for Purdue CS alumni data.",
+    "I like learning from first principles and following an idea through the whole stack—from protocols and data structures to the code running on a server. I also enjoy making smaller games and experiments simply because they are fun to build.",
+  ],
 };
 
 export const experiences = [

@@ -23,19 +23,22 @@ function App() {
         <Route element={<ProjectPage />} path="projects/:slug" />
         <Route element={<WritingPage />} path="writing" />
         <Route element={<NotePage />} path="writing/:slug" />
-        <Route element={<CreatePage />} path="play" />
+        <Route element={<CreatePage />} path="fun" />
         <Route element={<ExperiencePage />} path="experience" />
         <Route element={<KalshiDashboardPage />} path="lab/kalshi" />
         <Route element={<NotFoundPage />} path="*" />
       </Route>
 
-      <Route element={<Navigate replace to="/play" />} path="create" />
+      <Route element={<Navigate replace to="/fun" />} path="create" />
+      <Route element={<Navigate replace to="/fun" />} path="play" />
       <Route element={<Navigate replace to="/" />} path="resume" />
       <Route element={<Navigate replace to="/" />} path="message-me" />
       <Route element={<CreateWordlePage />} path="create/wordle" />
       <Route element={<CreateConnectionsPage />} path="create/connections" />
       <Route element={<WordlePage />} path="play/wordle/:id" />
       <Route element={<ConnectionsPage />} path="play/connections/:id" />
+      <Route element={<WordlePage />} path="fun/wordle/:id" />
+      <Route element={<ConnectionsPage />} path="fun/connections/:id" />
     </Routes>
   );
 }
