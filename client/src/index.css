@@ -775,16 +775,6 @@ a {
   line-height: 1.35;
 }
 
-.project-essay-header blockquote {
-  max-width: 700px;
-  margin: 42px 0;
-  padding-left: 24px;
-  border-left: 3px solid var(--accent);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.9rem;
-  line-height: 1.7;
-}
-
 .project-actions {
   display: flex;
   align-items: center;

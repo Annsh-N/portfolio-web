@@ -16,15 +16,11 @@ export function ProjectPage() {
       </Link>
 
       <header className="project-essay-header">
-        <p className="kicker">
-          {project.year} · {project.status}
-        </p>
         <h1>{project.name}</h1>
         <p className="project-descriptor">{project.descriptor}</p>
-        <blockquote>{project.question}</blockquote>
         <div className="project-actions">
           <a className="primary-text-button" href={project.repository} rel="noreferrer" target="_blank">
-            inspect the source ↗
+            github ↗
           </a>
           <span>{project.languages.join(" · ")}</span>
         </div>
@@ -41,11 +37,11 @@ export function ProjectPage() {
 
       <div className="essay-layout">
         <aside className="essay-margin-note">
-          <span>field note</span>
+          <span>tldr;</span>
           <p>{project.summary}</p>
         </aside>
         <div className="essay-copy">
-          {project.sections.map((section, index) => (
+          {project.sections.slice(0, -1).map((section, index) => (
             <section key={section.heading}>
               <div className="essay-section-label">{String(index + 1).padStart(2, "0")}</div>
               <h2>{section.heading}</h2>
