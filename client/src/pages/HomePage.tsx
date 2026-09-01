@@ -7,10 +7,6 @@ export function HomePage() {
       <div className="home-hero">
         <section className="home-intro" aria-labelledby="home-title">
           <h1 id="home-title">{profile.name}</h1>
-          <p className="home-lede">{profile.introduction}</p>
-          <p className="current-line">
-            Currently building Listen Config, a low-latency control plane for real-time voice agents.
-          </p>
           <div className="inline-links" aria-label="Profile links">
             <a href={profile.github} rel="noreferrer" target="_blank">
               github ↗
@@ -24,7 +20,11 @@ export function HomePage() {
 
         <aside className="about-scroll" aria-labelledby="about-heading">
           <h2 id="about-heading">more about me</h2>
+          <p>{profile.introduction}</p>
           <p>{profile.about}</p>
+          <p className="current-line">
+            Currently building Listen Config, a low-latency control plane for real-time voice agents.
+          </p>
         </aside>
       </div>
 
