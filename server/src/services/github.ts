@@ -5,6 +5,7 @@ export type GitHubContribution = {
 };
 
 export type GitHubContributionSnapshot = {
+  year: number;
   total: number;
   contributions: GitHubContribution[];
   fetchedAt: string;
@@ -42,12 +43,14 @@ function parseContributions(html: string): GitHubContribution[] {
 }
 
 export async function getGitHubContributionSnapshot(): Promise<GitHubContributionSnapshot> {
-  if (cachedSnapshot && Date.now() < cacheExpiresAt) {
+  const year = new Date().getUTCFullYear();
+
+  if (cachedSnapshot?.year === year && Date.now() < cacheExpiresAt) {
     return cachedSnapshot;
   }
 
   try {
-    const response = await fetch(profileUrl, {
+    const response = await fetch(`${profileUrl}?from=${year}-01-01&to=${year}-12-31`, {
       headers: {
         Accept: "text/html",
         "User-Agent": "annshnavle.dev contribution calendar",
@@ -60,11 +63,12 @@ export async function getGitHubContributionSnapshot(): Promise<GitHubContributio
     }
 
     const contributions = parseContributions(await response.text());
-    if (contributions.length < 300) {
+    if (contributions.length < 365) {
       throw new Error("GitHub contribution calendar was incomplete");
     }
 
     cachedSnapshot = {
+      year,
       contributions,
       total: contributions.reduce((sum, day) => sum + day.count, 0),
       fetchedAt: new Date().toISOString(),

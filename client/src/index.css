@@ -301,13 +301,57 @@ a {
 }
 
 .about-window {
+  width: 100%;
   height: 16rem;
-  min-width: 0;
+  min-width: min(100%, 26rem);
+  min-height: 14rem;
+  max-width: calc(100% + 36px);
+  max-height: 19rem;
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--rule);
   background: var(--paper-light);
+}
+
+.window-resize-handle {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.window-resize-handle::before,
+.window-resize-handle::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  border-right: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+
+.window-resize-handle::before {
+  width: 8px;
+  height: 8px;
+}
+
+.window-resize-handle::after {
+  width: 4px;
+  height: 4px;
+}
+
+.window-resize-handle:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .window-titlebar {
@@ -321,6 +365,21 @@ a {
   color: var(--ink-soft);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.66rem;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.window-titlebar:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.about-window.is-dragging .window-titlebar {
+  cursor: grabbing;
+}
+
+.about-window.is-resizing {
   user-select: none;
 }
 
@@ -536,6 +595,12 @@ a {
 
 .contribution-cell.is-empty {
   visibility: hidden;
+}
+
+.contribution-cell.is-future {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--rule-light);
+  opacity: 0.5;
 }
 
 .contribution-legend {
@@ -2002,7 +2067,14 @@ a {
   }
 
   .about-window {
+    width: 100%;
     height: 16rem;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .window-resize-handle {
+    display: none;
   }
 
   .window-panel-github {
