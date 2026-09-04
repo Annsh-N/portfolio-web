@@ -2,6 +2,7 @@ import express from "express";
 import path from "node:path";
 import type { GameConfig } from "../../shared/types.js";
 import { createConnectionsGame, createWordleGame, isExpired, summarizeGame } from "./services/games.js";
+import { getGitHubContributionSnapshot } from "./services/github.js";
 import { getKalshiPublicSnapshot } from "./services/kalshi.js";
 import { readStore } from "./store.js";
 import { connectionsSchema, wordleSchema } from "./validation.js";
@@ -62,6 +63,15 @@ app.get("/api/games/:type/:id", async (req, res) => {
 app.get("/api/kalshi/public", async (_req, res) => {
   res.setHeader("Cache-Control", "public, max-age=15, stale-while-revalidate=45");
   res.json(await getKalshiPublicSnapshot());
+});
+
+app.get("/api/github/contributions", async (_req, res) => {
+  try {
+    res.setHeader("Cache-Control", "public, max-age=900, stale-while-revalidate=3600");
+    res.json(await getGitHubContributionSnapshot());
+  } catch {
+    res.status(502).json({ message: "GitHub activity is temporarily unavailable." });
+  }
 });
 
 app.get("/api/health", (_req, res) => {

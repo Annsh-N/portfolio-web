@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { AboutWindow } from "@/components/AboutWindow";
 import { experiences, notes, profile, projects } from "@/content/siteContent";
 
 export function HomePage() {
@@ -19,11 +20,7 @@ export function HomePage() {
             </div>
           </section>
 
-          <aside className="about-scroll" aria-label="About Annsh">
-            {profile.about.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </aside>
+          <AboutWindow githubUrl={profile.github} paragraphs={profile.about} />
         </div>
 
         <section className="hosting-section" aria-labelledby="hosting-heading">
