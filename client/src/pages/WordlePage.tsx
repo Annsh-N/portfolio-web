@@ -91,7 +91,7 @@ export function WordlePage() {
       return;
     }
     const guess = currentGuess.toUpperCase();
-    if (!wordleDictionarySet.has(guess)) {
+    if (guess !== config.answer && !wordleDictionarySet.has(guess)) {
       setMessage("That word is not in the dictionary.");
       return;
     }

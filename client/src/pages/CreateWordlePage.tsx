@@ -3,7 +3,6 @@ import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { createWordle } from "@/lib/api";
 import { formatDate } from "@/lib/format";
-import { wordleDictionarySet } from "@shared/wordleDictionary";
 
 const keyboardRows = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -78,8 +77,8 @@ export function CreateWordlePage() {
       return;
     }
 
-    if (!wordleDictionarySet.has(nextWord.toUpperCase())) {
-      setError("Use a real five-letter word.");
+    if (!/^[a-zA-Z]{5}$/.test(nextWord)) {
+      setError("Use exactly five letters.");
       return;
     }
 
@@ -117,7 +116,7 @@ export function CreateWordlePage() {
         </header>
 
         <div className="wordle-nyt-status" role="status">
-          {error ?? (result ? "Link ready to send." : "Pick a five-letter answer and create a custom board.")}
+          {error ?? (result ? "Link ready to send." : "Pick any five-letter answer and create a custom board.")}
         </div>
 
         <div className="wordle-maker-result-strip">

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { wordleDictionarySet } from "../../shared/wordleDictionary.js";
 
 export const wordleSchema = z.object({
   answer: z
@@ -7,8 +6,7 @@ export const wordleSchema = z.object({
     .trim()
     .min(5, "Enter a five-letter answer")
     .max(5, "Enter a five-letter answer")
-    .regex(/^[a-zA-Z]+$/, "Use letters only")
-    .refine((value) => wordleDictionarySet.has(value.toUpperCase()), "Use a real five-letter word"),
+    .regex(/^[a-zA-Z]+$/, "Use letters only"),
 });
 
 const connectionGroupSchema = z.object({
