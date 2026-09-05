@@ -27,6 +27,10 @@ type DragState = {
   startY: number;
   originX: number;
   originY: number;
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
 };
 
 type WindowSize = {
@@ -49,17 +53,8 @@ type AboutWindowProps = {
 
 const tabs: WindowTab[] = ["about", "github"];
 
-function clamp(value: number, limit: number): number {
-  return Math.min(limit, Math.max(-limit, value));
-}
-
 function clampBetween(value: number, minimum: number, maximum: number): number {
   return Math.min(maximum, Math.max(minimum, value));
-}
-
-function getMoveLimits(): WindowPosition {
-  const compact = window.matchMedia("(max-width: 820px)").matches;
-  return compact ? { x: 10, y: 10 } : { x: 36, y: 28 };
 }
 
 function getResizeBounds(element: HTMLElement): {
@@ -241,17 +236,23 @@ export function AboutWindow({ paragraphs, githubUrl }: AboutWindowProps) {
   }
 
   function handleTitlePointerDown(event: ReactPointerEvent<HTMLDivElement>): void {
-    if (event.button !== 0) {
+    const element = windowRef.current;
+    if (event.button !== 0 || !element) {
       return;
     }
 
     event.preventDefault();
+    const bounds = element.getBoundingClientRect();
     dragState.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
       originX: position.x,
       originY: position.y,
+      minX: position.x - bounds.left,
+      maxX: position.x + window.innerWidth - bounds.right,
+      minY: position.y - bounds.top,
+      maxY: position.y + window.innerHeight - bounds.bottom,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
     setIsDragging(true);
@@ -263,10 +264,9 @@ export function AboutWindow({ paragraphs, githubUrl }: AboutWindowProps) {
       return;
     }
 
-    const limits = getMoveLimits();
     setPosition({
-      x: clamp(drag.originX + event.clientX - drag.startX, limits.x),
-      y: clamp(drag.originY + event.clientY - drag.startY, limits.y),
+      x: clampBetween(drag.originX + event.clientX - drag.startX, drag.minX, drag.maxX),
+      y: clampBetween(drag.originY + event.clientY - drag.startY, drag.minY, drag.maxY),
     });
   }
 
@@ -301,12 +301,16 @@ export function AboutWindow({ paragraphs, githubUrl }: AboutWindowProps) {
     }
 
     event.preventDefault();
+    const element = windowRef.current;
+    if (!element) {
+      return;
+    }
+
     const step = event.shiftKey ? 8 : 4;
-    const limits = getMoveLimits();
-    setPosition((current) => ({
-      x: clamp(current.x + offset.x * step, limits.x),
-      y: clamp(current.y + offset.y * step, limits.y),
-    }));
+    const bounds = element.getBoundingClientRect();
+    const deltaX = clampBetween(offset.x * step, -bounds.left, window.innerWidth - bounds.right);
+    const deltaY = clampBetween(offset.y * step, -bounds.top, window.innerHeight - bounds.bottom);
+    setPosition((current) => ({ x: current.x + deltaX, y: current.y + deltaY }));
   }
 
   function handleResizePointerDown(event: ReactPointerEvent<HTMLButtonElement>): void {
