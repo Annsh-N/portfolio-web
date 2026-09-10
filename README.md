@@ -52,3 +52,17 @@ The intended deployment keeps the Node process bound to a private loopback port 
 proxy. The proxy serves the public domain, applies request limits, and forwards only the portfolio application. Game
 state is local and disposable; links expire after seven days. Private trading telemetry and control remain in a
 separate authenticated service.
+
+## Deployment
+
+Production releases are built and activated by Build Orchestrator from a full
+commit SHA on `main`. The deployer runs the existing type checks, lint, and
+build in an isolated checkout, validates private C++ and Node staging
+processes, then switches an atomic release link. The prior release remains
+available to the orchestrator's rollback action.
+
+The `Check and deploy` GitHub Actions workflow is manual-only and runs only
+when dispatched from `main`. It requires `VPS_HOST`, `VPS_PORT`, `VPS_USER`,
+`VPS_SSH_KEY`, and `VPS_HOST_KEY` repository secrets. The host-key value
+must be a trusted known-hosts entry; the workflow does not discover or accept a
+new host key at runtime.
