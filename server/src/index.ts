@@ -75,7 +75,7 @@ app.get("/api/github/contributions", async (_req, res) => {
 });
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true });
+  res.json({ ok: true, commit: process.env.DEPLOYMENT_COMMIT ?? "unknown" });
 });
 
 if (process.env.NODE_ENV === "production") {
