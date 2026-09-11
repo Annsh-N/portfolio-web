@@ -17,6 +17,8 @@ export function NotePage() {
     );
   }
 
+  const sections = note.sections ?? [{ paragraphs: note.paragraphs }];
+
   return (
     <article className="notebook-page article-essay">
       <Link className="back-link" to="/writing">
@@ -33,10 +35,15 @@ export function NotePage() {
         </div>
       </header>
       <div className="article-copy">
-        {note.paragraphs.map((paragraph, index) => (
-          <p className={index === 0 ? "article-opening" : ""} key={paragraph}>
-            {paragraph}
-          </p>
+        {sections.map((section, sectionIndex) => (
+          <section className="article-section" key={section.heading ?? `section-${sectionIndex}`}>
+            {section.heading && <h2>{section.heading}</h2>}
+            {section.paragraphs.map((paragraph, paragraphIndex) => (
+              <p className={sectionIndex === 0 && paragraphIndex === 0 ? "article-opening" : ""} key={paragraph}>
+                {paragraph}
+              </p>
+            ))}
+          </section>
         ))}
       </div>
       <div className="article-end">∎</div>

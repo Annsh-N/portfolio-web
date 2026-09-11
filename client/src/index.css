@@ -1318,6 +1318,21 @@ a {
   line-height: 1.85;
 }
 
+.article-section + .article-section {
+  margin-top: 54px;
+}
+
+.article-section h2 {
+  max-width: 28ch;
+  margin: 0 0 18px;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
 .article-opening::first-letter {
   float: left;
   margin: 9px 8px 0 0;

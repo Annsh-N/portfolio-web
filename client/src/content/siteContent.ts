@@ -24,6 +24,10 @@ export type Note = {
   readTime: string;
   summary: string;
   paragraphs: string[];
+  sections?: Array<{
+    heading?: string;
+    paragraphs: string[];
+  }>;
 };
 
 export const profile = {
@@ -305,6 +309,131 @@ export const projects: Project[] = [
 ];
 
 export const notes: Note[] = [
+  {
+    slug: "fourth-dimension-isnt-time",
+    title: "What If the Fourth Dimension Isn’t Time?",
+    date: "11 Sep 2026",
+    readTime: "8 min",
+    summary: "A dimensional way of thinking about quantum measurement, Many-Worlds, and the shape of possibility.",
+    paragraphs: [],
+    sections: [
+      {
+        paragraphs: [
+          "Watch a basketball bounce across a sunlit court, but ignore the ball itself. Watch only its shadow.",
+          "Something strange happens.",
+          "The ball rises and falls through three-dimensional space, but its shadow has no height. From the shadow alone, much of the motion simply disappears. It slides across the two-dimensional court as though the vertical part of the trajectory did not exist.",
+          "Nothing mysterious happened to the ball. No information was destroyed. The shadow simply does not have enough dimensions to represent the full motion.",
+          "That raises an interesting question: could quantum measurement work in a similar way?",
+          "Perhaps what looks to us like a wavefunction suddenly choosing one outcome is not reality becoming simpler. Perhaps it is what a richer structure looks like when experienced from a world that can access only part of it.",
+        ],
+      },
+      {
+        heading: "The quantum problem",
+        paragraphs: [
+          "Imagine a quantum system with two possible outcomes, A and B.",
+          "Before measurement, quantum mechanics represents it as being in a superposition of both possibilities: state = A + B. More precisely, each possibility carries an amplitude that determines the probability of observing that result.",
+          "Then we measure the system. And we see only one answer.",
+          "In the textbook Copenhagen-style picture, measurement causes the wavefunction to collapse into one definite result. Before measurement: A and B. After measurement: A.",
+          "The difficult question is obvious: what happened to B?",
+        ],
+      },
+      {
+        heading: "Everett’s answer: nothing",
+        paragraphs: [
+          "Hugh Everett’s Many-Worlds interpretation gives a radically different answer. The wavefunction never collapses.",
+          "Instead, the observer becomes entangled with the system. One branch contains an observer who measured A. Another contains an observer who measured B: A × observer-who-saw-A + B × observer-who-saw-B.",
+          "Both remain part of the universal wavefunction. Each observer experiences only one result, but the full mathematical state still contains both.",
+          "This difference between the experience from inside one branch and the structure of the entire wavefunction is where dimensional thinking becomes interesting.",
+        ],
+      },
+      {
+        heading: "The loaf",
+        paragraphs: [
+          "Imagine reducing everything by one dimension.",
+          "Instead of trying to picture a four-dimensional object containing three-dimensional universes, imagine a normal three-dimensional loaf of bread containing two-dimensional worlds.",
+          "Every infinitely thin cross-section of the loaf is one complete two-dimensional universe. A creature living inside one slice can move around within that slice, but it cannot perceive the direction running along the length of the loaf. To that creature, its slice is simply reality.",
+          "Now imagine that a swirl runs continuously through the loaf. The entire swirl represents the wavefunction. A creature confined to one slice sees only the part of the swirl that intersects its own world.",
+          "One slice might contain outcome A. Another might contain outcome B. From inside either universe, there is one definite outcome. But from outside the loaf, both outcomes are simply different cross-sections of one larger structure.",
+          "Nothing had to disappear. The apparent collapse belongs to the slice, not necessarily to the loaf.",
+        ],
+      },
+      {
+        heading: "The fourth dimension as an outcome direction",
+        paragraphs: [
+          "Now restore the missing dimension. Our ordinary world has three spatial dimensions.",
+          "Imagine adding another coordinate—not as time, but as a direction through quantum alternatives. Call it the outcome dimension.",
+          "A single position along this dimension corresponds to one three-dimensional universe. Move slightly along it, and you reach another universe.",
+          "In one universe, the electron is measured spin-up. In another, spin-down. In one universe, the photon passes through one detector. In another, through the other.",
+          "A normal observer would be confined to one location along this direction and therefore experience one definite outcome. A hypothetical observer capable of moving along the extra dimension could instead perceive the larger structure containing many outcomes at once.",
+          "For such an observer, superposition might look less like uncertainty and more like geometry.",
+        ],
+      },
+      {
+        heading: "Why this is not standard physics",
+        paragraphs: [
+          "There is an important limitation. Quantum mechanics does not currently say that the wavefunction is literally a four-dimensional wave in physical space.",
+          "Quantum states live in something called Hilbert space. Hilbert space is an abstract mathematical space that can have enormously more than four dimensions. Even fairly small quantum systems can require a huge number of dimensions to describe completely.",
+          "So the scientifically careful version of this idea is not that the wavefunction literally exists in the fourth spatial dimension. It is: could part of the structure of quantum state space behave like an effective extra direction separating classical worlds?",
+          "That is speculative, but it is at least connected to real mathematical structures used in quantum mechanics.",
+        ],
+      },
+      {
+        heading: "Why decoherence makes the idea interesting",
+        paragraphs: [
+          "There is also a real physical process called decoherence. Quantum systems constantly interact with their environments.",
+          "A particle interacts with photons, air molecules, detectors, and surrounding matter. As these interactions accumulate, different components of the wavefunction become entangled with different states of the environment. Very roughly, A + B becomes A with environment-A + B with environment-B.",
+          "Those branches rapidly stop interfering with one another in any practical sense. This is one reason Many-Worlds physicists can talk about approximately separate classical branches emerging from one universal wavefunction.",
+          "The branches are not simply random disconnected possibilities. They arise from a structured quantum state. That creates a natural next question.",
+        ],
+      },
+      {
+        heading: "Are neighboring universes similar?",
+        paragraphs: [
+          "Return to the loaf. Take two slices only a millimeter apart. They will not be identical, but their swirl patterns will usually be very similar. Move gradually along the loaf and the pattern changes gradually.",
+          "If the universe dimension worked in anything like this way, then perhaps neighboring universes would also correspond to similar outcomes. A nearby universe might differ from ours by one particle landing a fraction of a millimeter away. A more distant universe might differ much more dramatically.",
+          "This would mean that the multiverse has something resembling geometry. There would be a meaningful concept of distance between worlds. Two worlds that differ only slightly would be close. Two worlds with radically different macroscopic histories would be far apart.",
+          "Standard Many-Worlds does not currently provide such a simple one-dimensional ordering. That part would be an additional hypothesis. But quantum state space itself does have mathematical notions of distance and similarity, so the general idea of nearby states is not foreign to quantum mechanics.",
+        ],
+      },
+      {
+        heading: "The insect in the loaf",
+        paragraphs: [
+          "Now imagine a tiny insect living inside the loaf. Unlike the two-dimensional creatures trapped in individual slices, the insect can move through the loaf in all three dimensions.",
+          "It does not need to cut the bread. It simply moves through a structure that already exists. At one position, it sees one cross-section of the swirl. Move slightly, and the pattern changes. Move farther, and it encounters very different patterns.",
+          "To the creatures trapped in each slice, their individual pattern looks complete. To the insect, all the slices are parts of one object.",
+          "In the dimensional quantum analogy, a higher-dimensional observer might perceive the universal wavefunction in a similar way. It would not simply see spin-up or spin-down. It would see the structure containing both.",
+          "What we call superposition could appear to it as shape. What we call measurement could appear as an observer becoming localized within one part of that shape. And what we call randomness might reflect our inability to perceive our position relative to the whole.",
+          "That final step is speculative. Existing quantum mechanics does not establish it. But it parallels Everett’s central move: the full wavefunction remains, while individual observers experience only particular branches.",
+        ],
+      },
+      {
+        heading: "Copenhagen versus the dimensional picture",
+        paragraphs: [
+          "The Copenhagen-style question is: how does possibility become one actual result? The Many-Worlds question is: what if all results remain in the universal wavefunction?",
+          "The dimensional version asks something slightly different: what if the distinction between possibility and actuality partly comes from the dimensional limits of the observer?",
+          "A shadow cannot display height. A slice cannot display the loaf. Perhaps a single classical world cannot display the full structure of the quantum state from which it emerges.",
+        ],
+      },
+      {
+        heading: "Where the idea becomes difficult",
+        paragraphs: [
+          "For this to become more than an analogy, several problems would have to be solved.",
+          "First, there is no experimental evidence for a traversable dimension connecting quantum branches. Second, Hilbert space generally has far more dimensions than one additional coordinate, so reducing its structure to a single extra axis would be mathematically difficult. Third, Many-Worlds does not currently tell us that branches have a simple spatial order.",
+          "And fourth, the theory would have to explain the Born rule—why quantum probabilities follow the square of a wavefunction’s amplitude. If one outcome has a probability of 99 percent and another has a probability of 1 percent, a geometric model would somehow need to represent that difference.",
+          "Perhaps high-probability outcomes would occupy more volume, more width, or greater measure along the larger structure. But that would need to be derived mathematically, not simply assumed.",
+        ],
+      },
+      {
+        heading: "The central idea",
+        paragraphs: [
+          "The basketball shadow provides the simplest intuition. The shadow is not wrong. It is incomplete.",
+          "The ball contains motion that the shadow does not have enough dimensions to represent. The same conceptual possibility can be applied to quantum mechanics.",
+          "Perhaps a definite classical universe is not the whole quantum reality. Perhaps it is a lower-dimensional view of something richer.",
+          "And perhaps what we call wavefunction collapse is not necessarily reality choosing one answer. It may instead be what a larger structure looks like when viewed from inside only one of its slices.",
+        ],
+      },
+    ],
+  },
   {
     slug: "bounded-queues-are-architecture",
     title: "A bounded queue is an architectural decision",
