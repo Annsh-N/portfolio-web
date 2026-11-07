@@ -86,6 +86,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = Number(process.env.PORT ?? 8787);
-app.listen(port, () => {
-  console.log(`Portfolio server listening on http://localhost:${port}`);
+const host = "127.0.0.1";
+app.listen(port, host, () => {
+  console.log(`Portfolio server listening on http://${host}:${port}`);
 });
